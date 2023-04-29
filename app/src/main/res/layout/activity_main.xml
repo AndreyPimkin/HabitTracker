@@ -37,16 +37,18 @@
         android:layout_marginHorizontal="40dp"
 
         />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/mainButton"
         android:layout_width="220dp"
         android:layout_height="55dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/mainLayout"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="370dp"
         android:background="@drawable/rounded_button"
-        android:textColor="@color/black"
-        android:text="@string/title_button_main" />
+        android:onClick="openNewWindow"
+        android:text="@string/title_button_main"
+        android:textColor="@color/black" />
 
 
     <RelativeLayout
