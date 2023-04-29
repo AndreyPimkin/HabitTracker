@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HabitTracker</string>
+    <string name="title_button_main">Продолжить</string>
+    <string name="title_text_main">Добро пожаловать</string>
+    <string name="second_text_main">Вы уже использовали приложение?</string>
+    <string name="image_one">Image one</string>
+    <string name="authorization_text"> <u> Авторизация</u> </string>
+</resources>
