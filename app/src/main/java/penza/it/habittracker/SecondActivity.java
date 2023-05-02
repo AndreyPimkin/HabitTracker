@@ -15,6 +15,6 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Во время боя переход назад не возможен", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Переход назад невозможен", Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
+    android:id="@+id/root_layout"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -48,6 +49,7 @@
         android:background="@drawable/rounded_button"
         android:onClick="openNewWindow"
         android:text="@string/title_button_main"
+        android:fontFamily="@font/patua_one"
         android:textColor="@color/black" />
 
 
@@ -77,13 +79,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:fontFamily="@font/patua_one"
+            android:onClick="openAuthorization"
             android:text="@string/authorization_text"
             android:textColor="@color/white"
+            android:background="@drawable/text_ripple"
             android:textSize="24sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
     </RelativeLayout>
+
 
 
 </RelativeLayout>
