@@ -2,6 +2,9 @@ package penza.it.habittracker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,9 +17,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     RelativeLayout root;
+
+    // Переменная для работы с БД
+    private DatabaseHelper mDBHelper;
+    private SQLiteDatabase mDb;
+
+    private Cursor cursor;
 
 
     @Override
@@ -26,15 +37,29 @@ public class MainActivity extends AppCompatActivity {
 
         root = findViewById(R.id.root_layout);
 
+        mDBHelper = new DatabaseHelper(this);
+
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
     }
 
-    public void openNewWindow(View v){
+    public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void openAuthorization(View v){
+    public void openAuthorization(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Авторизация");
@@ -61,11 +86,26 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 if(password.getText().toString().length() < 5){
-                    Snackbar.make(root, "Введите пароль длинее 5 символов", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(root, "Быть не менее 5 символов", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                // открытие авторизации
+                cursor = mDb.rawQuery("SELECT * FROM users WHERE mail = ? and password = ?", new String[] {email.getText().toString(), password.getText().toString()});
+                if (!cursor.isAfterLast()) {
+                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                    intent.putExtra("mail", email.getText().toString());
+                    intent.putExtra("password", password.getText().toString());
+                    startActivity(intent);
+                    finish();
+                }
+
+                else{
+                    Snackbar.make(root, "Пользователь не найден", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                cursor.close();
+
 
             }
         });
@@ -75,11 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
-
-
-
 
 
     }

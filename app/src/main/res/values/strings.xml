@@ -7,5 +7,9 @@
     <string name="email_field">Email</string>
     <string name="password_field">Password</string>
     <string name="authorization_text"> <u> Авторизация</u> </string>
+    <string name="habit_text">ГЛАВНАЯ</string>
+    <string name="history_text">ИСТОРИЯ</string>
+    <string name="pop_text">СТАТЬИ</string>
+    <string name="person_text">Я</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

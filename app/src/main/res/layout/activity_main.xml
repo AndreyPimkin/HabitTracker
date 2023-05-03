@@ -78,11 +78,12 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
+            android:background="@drawable/text_ripple"
             android:fontFamily="@font/patua_one"
+            android:minHeight="48dp"
             android:onClick="openAuthorization"
             android:text="@string/authorization_text"
             android:textColor="@color/white"
-            android:background="@drawable/text_ripple"
             android:textSize="24sp"
             android:textStyle="bold" />
 
