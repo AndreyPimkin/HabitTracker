@@ -13,6 +13,6 @@
     <color name="main_background">#007fff</color>
     <color name="ripple_effect">#848482</color>
     <color name="ripple_effect_text">#f1a497</color>
-    <color name="bottom_menu">#fef7da</color>
+    <color name="bottom_menu">#fffad6</color>
 
 </resources>

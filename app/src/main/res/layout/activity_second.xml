@@ -10,11 +10,12 @@
 
 
     <LinearLayout
+        android:id="@+id/mainLinear"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:background="@color/main_background"
+        android:background="@drawable/text_ripple"
         >
 
 
@@ -23,6 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:onClick="openHabit"
+            android:background="@drawable/circle_button"
             android:layout_weight="1">
             <ImageView
                 android:id="@+id/imageHabit"
@@ -32,8 +35,6 @@
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/circle_button"
-                android:onClick="openHabit"
                 app:srcCompat="@drawable/habit" />
 
 
@@ -56,8 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:onClick="openHistory"
+            android:background="@drawable/circle_button"
             android:layout_weight="1">
-
 
             <ImageView
                 android:id="@+id/imageHistory"
@@ -66,8 +68,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:onClick="openHistory"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/history" />
 
@@ -90,6 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:onClick="openPop"
+            android:background="@drawable/circle_button"
             android:layout_weight="1">
 
             <ImageView
@@ -99,8 +101,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:onClick="openPop"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/pop" />
 
@@ -122,6 +122,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:onClick="openPerson"
+            android:background="@drawable/circle_button"
             android:layout_weight="1">
 
             <ImageView
@@ -131,8 +133,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:onClick="openPerson"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/peson" />
 
@@ -152,14 +152,19 @@
         </RelativeLayout>
 
 
-
-
-
-
-
-
-
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameMain"
+        android:layout_width="match_parent"
+        android:layout_height="817dp"
+        android:layout_above="@+id/mainLinear"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="3dp"
+        android:background="#fffad6">
+
+    </FrameLayout>
 
 
 
