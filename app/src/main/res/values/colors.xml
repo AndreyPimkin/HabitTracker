@@ -14,5 +14,7 @@
     <color name="ripple_effect">#848482</color>
     <color name="ripple_effect_text">#f1a497</color>
     <color name="bottom_menu">#fffad6</color>
+    <color name="color_k">#795458</color>
+    <color name="create_color">#8e7274</color>
 
 </resources>
