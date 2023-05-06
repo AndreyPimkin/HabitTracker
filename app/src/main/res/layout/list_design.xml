@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_mat"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/rounded_list"
+        >
+
+        <TextView
+            android:id="@+id/name_habit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:maxWidth="200dp"
+            android:textStyle="bold"
+            android:text="Загаловок"
+            android:layout_marginTop="11dp"
+            android:layout_marginStart="100dp"
+            android:fontFamily="@font/patua_one"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/description_habit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_habit"
+            android:layout_marginHorizontal="101dp"
+            android:layout_marginTop="1dp"
+            android:text="Описание"
+            android:fontFamily="@font/patua_one"
+            android:maxWidth="150dp"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/cancel" />
+
+        <ImageView
+            android:id="@+id/image_habit"
+            android:layout_width="30dp"
+            android:layout_marginStart="275dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/arrow_two" />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

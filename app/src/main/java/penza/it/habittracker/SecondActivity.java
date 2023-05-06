@@ -1,11 +1,11 @@
 package penza.it.habittracker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -44,7 +44,6 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Переход назад невозможен", Toast.LENGTH_SHORT).show();
     }
 
     public void openHabit(View v) {
@@ -88,6 +87,12 @@ public class SecondActivity extends AppCompatActivity {
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#c8c8c8"));
 
+    }
+
+    public void openCreateWindow(View view) {
+        Intent intent = new Intent(this, CreateHabitActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

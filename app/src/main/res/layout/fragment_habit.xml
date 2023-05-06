@@ -7,7 +7,6 @@
     tools:context=".HabitFragment">
 
     <ImageView
-        android:id="@+id/imageAdd"
         android:layout_width="80dp"
         android:layout_height="220dp"
         android:layout_marginTop="-30dp"
@@ -15,6 +14,7 @@
         android:src="@drawable/add" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:onClick="openCreateWindow"
         android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginTop="170dp"
@@ -26,7 +26,6 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/secondText"
         android:layout_width="300dp"
         android:textAlignment="center"
         android:layout_height="wrap_content"
