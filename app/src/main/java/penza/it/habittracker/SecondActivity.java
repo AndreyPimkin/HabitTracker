@@ -31,14 +31,7 @@ public class SecondActivity extends AppCompatActivity {
 
         habitFragment =  new HabitFragment();
         setNewFragment(habitFragment);
-
-        Bundle arguments = getIntent().getExtras();
-         if(arguments != null){
-             String mail = arguments.getString("mail");
-             String password = arguments.getString("password");
-         }
-
-         frameLayout = findViewById(R.id.frameMain);
+        frameLayout = findViewById(R.id.frameMain);
 
     }
 

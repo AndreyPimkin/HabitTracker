@@ -21,22 +21,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CreateHabitActivity extends AppCompatActivity {
+public class ChoiceHabitActivity extends AppCompatActivity {
 
-    private ArrayList<String> categoryList = new ArrayList<>(10);
+    private String nameCategory;
+    private String descriptionCategory;
+
+    private ArrayList<String> habitList = new ArrayList<>(10);
     private ArrayList<String> descriptionList = new ArrayList<>(10);
     private ArrayList<String> imageList = new ArrayList<>(10);
     private ListView listView;
-    private CategoryAdapter categoryAdapter;
+
+    private HabitAdapter habitAdapter;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
 
 
+
+    private TextView textViewName, textViewDesc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_habit);
+        setContentView(R.layout.activity_choice_habit);
+
+        Bundle arguments = getIntent().getExtras();
+        if(arguments != null){
+            nameCategory = arguments.getString("name");
+            descriptionCategory = arguments.getString("description");
+        }
+        textViewName = findViewById(R.id.text_name);
+        textViewDesc = findViewById(R.id.text_description);
+
+        textViewName.setText(nameCategory);
+        textViewDesc.setText(descriptionCategory);
+
         mDBHelper = new DatabaseHelper(this);
 
         try {
@@ -53,17 +72,17 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         initList();
 
-        categoryAdapter = new CategoryAdapter(this);
-        listView = findViewById(R.id.listCategory);
-        listView.setAdapter(categoryAdapter);
+
+        habitAdapter = new HabitAdapter(this);
+        listView = findViewById(R.id.listHabit);
+        listView.setAdapter(habitAdapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(CreateHabitActivity.this, ChoiceHabitActivity.class);
-                intent.putExtra("name", categoryList.get(position));
-                intent.putExtra("description", descriptionList.get(position));
+                Intent intent = new Intent(ChoiceHabitActivity.this, ChoiceHabitActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -71,23 +90,22 @@ public class CreateHabitActivity extends AppCompatActivity {
 
     }
 
-    public void backWindow(View view) {
-        Intent intent = new Intent(this, SecondActivity.class);
+    public void backCreateWindow(View view) {
+        Intent intent = new Intent(this, CreateHabitActivity.class);
         startActivity(intent);
         finish();
     }
 
-    // Пишем свой класс-адаптер
-    private class CategoryAdapter extends BaseAdapter {
+    private class HabitAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
 
-        CategoryAdapter(Context context) {
+        HabitAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            return categoryList.size();
+            return habitList.size();
         }
 
         @Override
@@ -110,7 +128,7 @@ public class CreateHabitActivity extends AppCompatActivity {
             image.setImageResource(getResources().getIdentifier(imageList.get(position), "drawable", getPackageName()));
 
             TextView signTextView = (TextView) convertView.findViewById(R.id.name_habit);
-            signTextView.setText(categoryList.get(position));
+            signTextView.setText(habitList.get(position));
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.description_habit);
             dateTextView.setText(descriptionList.get(position));
@@ -119,17 +137,18 @@ public class CreateHabitActivity extends AppCompatActivity {
         }
     }
 
+
     private void initList() {
-        cursor = mDb.rawQuery("SELECT * FROM categories", null);
+        cursor = mDb.rawQuery("SELECT * FROM habits WHERE id_category = (SELECT id_category FROM categories WHERE name = ?)",
+                new String[]{nameCategory});
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                categoryList.add(cursor.getString(1));
-                descriptionList.add(cursor.getString(2));
-                imageList.add(cursor.getString(3));
+                habitList.add(cursor.getString(2));
+                descriptionList.add(cursor.getString(3));
+                imageList.add(cursor.getString(4));
                 cursor.moveToNext();
             }
         }
         cursor.close();
     }
-
 }

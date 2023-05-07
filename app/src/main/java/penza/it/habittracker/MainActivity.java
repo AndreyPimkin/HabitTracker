@@ -22,13 +22,10 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     RelativeLayout root;
-
     // Переменная для работы с БД
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
-
     private Cursor cursor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,25 +78,23 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Вход", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(TextUtils.isEmpty(email.getText().toString())){
+                if (TextUtils.isEmpty(email.getText().toString())) {
                     Snackbar.make(root, "Введите почту", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                if(password.getText().toString().length() < 5){
+                if (password.getText().toString().length() < 5) {
                     Snackbar.make(root, "Быть не менее 5 символов", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                cursor = mDb.rawQuery("SELECT * FROM users WHERE mail = ? and password = ?", new String[] {email.getText().toString(), password.getText().toString()});
+                cursor = mDb.rawQuery("SELECT * FROM users WHERE mail = ? and password = ?", new String[]{email.getText().toString(), password.getText().toString()});
                 if (!cursor.isAfterLast()) {
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                     intent.putExtra("mail", email.getText().toString());
                     intent.putExtra("password", password.getText().toString());
                     startActivity(intent);
                     finish();
-                }
-
-                else{
+                } else {
                     Snackbar.make(root, "Пользователь не найден", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
@@ -110,12 +105,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         builder.setView(authorization_window);
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
 
     }
 
