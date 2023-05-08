@@ -15,6 +15,8 @@ public class SecondActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     HabitFragment habitFragment =  new HabitFragment();
+    HistoryFragment historyFragment = new HistoryFragment();
+
     private TextView textViewHabit, textViewHistory, textViewPop, textViewPerson;
 
     @Override
@@ -40,17 +42,16 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void openHabit(View v) {
-        habitFragment =  new HabitFragment();
-        setNewFragment(habitFragment);
-    }
-
-    private void setNewFragment(Fragment fragment) {
         textViewHabit.setTextColor(Color.parseColor("#c8c8c8"));
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#ffffff"));
 
+        habitFragment =  new HabitFragment();
+        setNewFragment(habitFragment);
+    }
 
+    private void setNewFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameMain, fragment);
         ft.addToBackStack(null);
@@ -62,6 +63,10 @@ public class SecondActivity extends AppCompatActivity {
         textViewHistory.setTextColor(Color.parseColor("#c8c8c8"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#ffffff"));
+
+
+        habitFragment =  new HabitFragment();
+        setNewFragment(historyFragment);
 
     }
 

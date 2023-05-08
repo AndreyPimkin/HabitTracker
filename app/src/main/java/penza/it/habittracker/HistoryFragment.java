@@ -7,20 +7,20 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-
-public class HabitFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_habit, container, false);
-
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
-
+    public void clearDate(View view) {
+    }
 }

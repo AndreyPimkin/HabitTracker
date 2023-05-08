@@ -17,6 +17,9 @@
     <string name="password_field">Password</string>
     <string name="authorization_text"> <u> Авторизация</u> </string>
     <string name="habit_text">ГЛАВНАЯ</string>
+    <string name="end_text">ЗАВЕРШЕНО</string>
+    <string name="completed_text">ЗАВЕРШЕНО</string>
+    <string name="failed_text">ПРОВАЛЕНО</string>
     <string name="history_text">ИСТОРИЯ</string>
     <string name="mark_text">РЕГУЛЯРНАЯ</string>
     <string name="cancel_text">ВРЕДНАЯ</string>
@@ -33,4 +36,5 @@
     <string name="interval">Периодичность</string>
     <string name="end">Окончание</string>
     <string name="reminder">Напоминание</string>
+    <string name="clear_date">Сброс</string>
 </resources>
