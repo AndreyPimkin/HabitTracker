@@ -83,7 +83,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void openCreateWindow(View view) {
-        Intent intent = new Intent(this, CreateHabitActivity.class);
+        Intent intent = new Intent(this, ChoiceCategoryActivity.class);
         startActivity(intent);
         finish();
     }

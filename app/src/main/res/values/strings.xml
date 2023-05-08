@@ -6,6 +6,10 @@
     <string name="text_create_habit"> <b> Создайте новую привычку </b> </string>
     <string name="text_create_habit_two"> <b>+  Создать </b> </string>
     <string name="text_create_habit_three"> <b> ИЛИ ВЫБЕРИТЕ ИЗ УЖЕ ГОТОВЫХ </b></string>
+    <string name="text_button_create_one"> <b> Неважно </b></string>
+    <string name="text_button_create_two"> <b> Днем </b></string>
+    <string name="text_button_create_three"> <b> Утром </b></string>
+    <string name="text_button_create_four"> <b> Вечером </b></string>
     <string name="title_text_main">Добро пожаловать</string>
     <string name="second_text_main"> Вы уже использовали приложение? </string>
     <string name="image_one">Image one</string>
@@ -19,4 +23,14 @@
     <string name="pop_text">СТАТЬИ</string>
     <string name="person_text">Я</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_button">Сохранить</string>
+    <string name="matter_button">НЕВАЖНО</string>
+    <string name="day_button">ДНЕМ</string>
+    <string name="evening_button">ВЕЧЕРОМ</string>
+    <string name="morning_button">УТРОМ</string>
+    <string name="input_date">Введите дату</string>
+    <string name="input_time">Введите время</string>
+    <string name="interval">Периодичность</string>
+    <string name="end">Окончание</string>
+    <string name="reminder">Напоминание</string>
 </resources>

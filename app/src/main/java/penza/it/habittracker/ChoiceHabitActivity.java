@@ -91,7 +91,7 @@ public class ChoiceHabitActivity extends AppCompatActivity {
     }
 
     public void backCreateWindow(View view) {
-        Intent intent = new Intent(this, CreateHabitActivity.class);
+        Intent intent = new Intent(this, ChoiceCategoryActivity.class);
         startActivity(intent);
         finish();
     }

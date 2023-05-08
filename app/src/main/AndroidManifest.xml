@@ -12,10 +12,13 @@
         android:theme="@style/Theme.HabitTracker"
         tools:targetApi="31">
         <activity
+            android:name=".CreateHabitActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChoiceHabitActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateHabitActivity"
+            android:name=".ChoiceCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".SecondActivity"
