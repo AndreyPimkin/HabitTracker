@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,59 +8,174 @@
     tools:context=".CreateHabitActivity">
 
 
-    <ImageView
-        android:layout_width="27dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="16dp"
-        android:onClick="backWindow"
-        android:layout_marginHorizontal="15dp"
-        android:background="@drawable/rounded_arrow"
-        app:srcCompat="@drawable/arrow" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:textAlignment="center"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="50dp"
-        android:fontFamily="@font/patua_one"
-        android:text="@string/text_create_habit"
-        android:textColor="@color/black"
-        android:textSize="19sp"
-        />
-
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginTop="70dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="650dp"
         android:background="@drawable/rounded_button_two"
         android:fontFamily="@font/patua_one"
-        android:text="@string/text_create_habit_two"
-        android:textSize="25sp"
-        android:textColor="@color/white" />
+        android:onClick="createHabit"
+        android:text="@string/save_button"
+        android:textColor="@color/white"
+        android:textSize="23sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/rounded_button_two"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/matter_button"
+        android:onClick="matterChoice"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/rounded_button_two"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/day_button"
+        android:onClick="dayChoice"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/rounded_button_two"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/morning_button"
+        android:onClick="morningChoice"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/rounded_button_two"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/evening_button"
+        android:onClick="eveningChoice"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rounded_arrow"
+        android:onClick="backChoiceWindow"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        app:srcCompat="@drawable/cross" />
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/patua_one"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold" />
 
 
     <TextView
+        android:id="@+id/text_description"
         android:layout_width="wrap_content"
-        android:textAlignment="center"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:layout_marginHorizontal="55dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="85dp"
         android:fontFamily="@font/patua_one"
-        android:text="@string/text_create_habit_three"
-        android:textColor="@color/color_k"
-        android:textSize="14sp"
-        />
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
 
-    <ListView
-        android:id="@+id/listCategory"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="125dp"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/interval"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="275dp"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/end"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/dateField"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="200dp"
-        android:divider="@null"
-        android:dividerHeight="10dp" />
+        android:layout_marginTop="295dp"
+        android:fontFamily="@font/volkhov"
+        android:hint="@string/input_date"
+        android:inputType="datetime"
+        android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/fieldHint"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="355dp"
+        android:fontFamily="@font/patua_one"
+        android:text="@string/reminder"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+    <EditText
+        android:id="@+id/timeField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="375dp"
+        android:fontFamily="@font/volkhov"
+        android:hint="@string/input_time"
+        android:inputType="time"
+        android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/fieldHint"
+        android:textSize="20sp" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchReminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="425dp"
+        android:text="@string/reminder" />
 
 
 </RelativeLayout>
