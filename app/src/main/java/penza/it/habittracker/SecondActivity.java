@@ -38,6 +38,9 @@ public class SecondActivity extends AppCompatActivity {
     private ArticleAdapter articleAdapter;
 
     PopFragment popFragment;
+    PersonFragment perFragment;
+
+
 
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
@@ -168,6 +171,9 @@ public class SecondActivity extends AppCompatActivity {
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#c8c8c8"));
+
+        perFragment =  new PersonFragment();
+        setNewFragment(perFragment);
 
     }
 

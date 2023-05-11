@@ -16,6 +16,7 @@
     <string name="email_field">Email</string>
     <string name="password_field">Password</string>
     <string name="authorization_text"> <u> Авторизация</u> </string>
+    <string name="authorization_text_two"> <u> Уже использовали приложение? </u> </string>
     <string name="habit_text">ГЛАВНАЯ</string>
     <string name="end_text">ЗАВЕРШЕНО</string>
     <string name="completed_text">ЗАВЕРШЕНО</string>
@@ -37,4 +38,7 @@
     <string name="end">Окончание</string>
     <string name="reminder">Напоминание</string>
     <string name="clear_date">Сброс</string>
+    <string name="registration">Регистрация</string>
+    <string name="version">Version: 0.1.0</string>
+    <string name="new_text">Откройте для себя что-то новое</string>
 </resources>

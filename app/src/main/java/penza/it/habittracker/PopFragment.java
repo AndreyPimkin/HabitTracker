@@ -26,7 +26,6 @@ public class PopFragment extends Fragment {
     private ArrayList<String> linkList = new ArrayList<>(10);
     private ArrayList<String> imageList = new ArrayList<>(10);
 
-    private ListView listView;
     private ArticleAdapter articleAdapter;
 
     private DatabaseHelper mDBHelper;
