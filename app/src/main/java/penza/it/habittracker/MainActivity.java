@@ -20,9 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-
     RelativeLayout root;
-    // Переменная для работы с БД
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
@@ -86,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(root, "Быть не менее 5 символов", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-
                 cursor = mDb.rawQuery("SELECT * FROM users WHERE mail = ? and password = ?", new String[]{email.getText().toString(), password.getText().toString()});
+
                 if (!cursor.isAfterLast()) {
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                     intent.putExtra("mail", email.getText().toString());
                     intent.putExtra("password", password.getText().toString());
+                    intent.putExtra("checkAuthorization", true);
                     startActivity(intent);
                     finish();
                 } else {
@@ -100,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 cursor.close();
-
-
             }
         });
 

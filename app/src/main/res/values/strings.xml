@@ -32,8 +32,8 @@
     <string name="day_button">ДНЕМ</string>
     <string name="evening_button">ВЕЧЕРОМ</string>
     <string name="morning_button">УТРОМ</string>
-    <string name="input_date">Введите дату</string>
-    <string name="input_time">Введите время</string>
+    <string name="input_date">ЯНВ 01 2023</string>
+    <string name="input_time">Выберите время</string>
     <string name="interval">Периодичность</string>
     <string name="end">Окончание</string>
     <string name="reminder">Напоминание</string>

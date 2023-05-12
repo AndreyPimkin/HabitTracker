@@ -31,6 +31,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:onClick="openCreateHabitActivity"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginTop="70dp"
@@ -40,7 +41,6 @@
         android:text="@string/text_create_habit_two"
         android:textSize="25sp"
         android:textColor="@color/white" />
-
 
     <TextView
         android:layout_width="wrap_content"

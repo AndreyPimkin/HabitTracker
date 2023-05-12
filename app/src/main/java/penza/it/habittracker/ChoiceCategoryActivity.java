@@ -77,6 +77,13 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
         finish();
     }
 
+    public void openCreateHabitActivity(View view) {
+        Intent intent = new Intent(this, CreateHabitActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
     // Пишем свой класс-адаптер
     private class CategoryAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;

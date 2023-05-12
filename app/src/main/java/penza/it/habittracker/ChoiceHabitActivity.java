@@ -82,7 +82,7 @@ public class ChoiceHabitActivity extends AppCompatActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ChoiceHabitActivity.this, ChoiceHabitActivity.class);
+                Intent intent = new Intent(ChoiceHabitActivity.this, CreateHabitActivity.class);
                 startActivity(intent);
                 finish();
             }

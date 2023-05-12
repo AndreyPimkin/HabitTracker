@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/bellota_light</item>
+        <item>@font/fresca</item>
         <item>@font/martel_extralight</item>
         <item>@font/patua_one</item>
         <item>@font/roboto_slab_thin</item>
