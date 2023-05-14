@@ -3,7 +3,7 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="def_color">#f1a497</color>
     <color name="color_title">#2a2a2a</color>
-    <color name="teal_200">#82e1c3</color>
+    <color name="teal_200">#8e7274</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -16,6 +16,8 @@
     <color name="ripple_effect_text">#f1a497</color>
     <color name="bottom_menu">#fffad6</color>
     <color name="color_k">#795458</color>
+    <color name="color_nSW">#c0c0c0</color>
+    <color name="color_ySW">#614346</color>
     <color name="color_h">#83e2c4</color>
     <color name="create_color">#8e7274</color>
 

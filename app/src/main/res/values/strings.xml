@@ -28,17 +28,19 @@
     <string name="person_text">Я</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save_button">Сохранить</string>
-    <string name="matter_button">НЕВАЖНО</string>
-    <string name="day_button">ДНЕМ</string>
-    <string name="evening_button">ВЕЧЕРОМ</string>
-    <string name="morning_button">УТРОМ</string>
-    <string name="input_date">ЯНВ 01 2023</string>
+    <string name="color_button">Выберите цвет</string>
+    <string name="matter_button">Неважно</string>
+    <string name="day_button">Днем</string>
+    <string name="evening_button">Вечером</string>
+    <string name="morning_button">Утром</string>
+    <string name="input_date"> Окончание:  янв 01, 2023</string>
     <string name="input_time">Выберите время</string>
     <string name="interval">Периодичность</string>
     <string name="end">Окончание</string>
     <string name="reminder">Напоминание</string>
     <string name="clear_date">Сброс</string>
     <string name="registration">Регистрация</string>
+    <string name="name_habit">Название привычки</string>
     <string name="version">Version: 0.1.0</string>
     <string name="new_text">Откройте для себя что-то новое</string>
 </resources>

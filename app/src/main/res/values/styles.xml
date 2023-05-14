@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="radioButtonStyle" >
+        <item name="android:layout_width" >match_parent</item>
+        <item name="android:layout_marginHorizontal" tools:targetApi="o"> 20dp</item>
+        <item name="android:layout_height"> 37.5dp </item>
+        <item name="android:textColor"> @color/white_mat </item>
+        <item name="android:textSize">  20sp </item>
+        <item name="android:button">  @null </item>
+        <item name="android:gravity">  center </item>
+        <item name="android:onClick">  radioTapped </item>
+        <item name="android:fontFamily">  sans-serif-condensed </item>
+
+    </style>
+
+    <style name="switchStyle" parent="Theme.AppCompat.Light">
+        <!-- активное состояние (30% прозрачности для фона) -->
+        <item name="colorControlActivated">@color/color_ySW</item>
+
+        <!-- неактивное состояние ползунка -->
+        <item name="colorSwitchThumbNormal">@color/color_nSW</item>
+
+        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
+        <item name="android:colorForeground">@android:color/darker_gray</item>
+    </style>
+    
+</resources>
