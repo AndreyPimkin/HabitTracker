@@ -22,6 +22,8 @@
         android:textColor="@color/white"
         android:textSize="23sp" />
 
+
+
     <RelativeLayout
         android:id="@+id/relativeChoice"
         android:layout_width="match_parent"
@@ -33,6 +35,15 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="-100dp"
         android:background="@drawable/rounded_list">
+
+        <ImageView
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginTop="25sp"
+            android:layout_marginStart="25dp"
+            android:id="@+id/imageOld"
+            android:visibility="gone"
+            />
 
 
         <Spinner
@@ -125,7 +136,7 @@
         app:srcCompat="@drawable/cross" />
 
     <EditText
-        android:id="@+id/text_name"
+        android:id="@+id/inputName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/relativeChoice"

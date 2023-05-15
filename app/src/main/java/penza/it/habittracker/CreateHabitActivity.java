@@ -5,14 +5,19 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -23,6 +28,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -39,15 +47,32 @@ public class CreateHabitActivity extends AppCompatActivity {
 
     int mDefaultColor;
 
-
     RadioButton noMatter, morning, day, evening;
 
+    EditText inputNameHabit;
+
+    ImageView oldImage;
+
+    private DatabaseHelper mDBHelper;
+    private SQLiteDatabase mDb;
+    private Cursor cursor;
+
+    private String dateForDB;
+    private String selectedPeriod;
+
+    private String selectedTime;
+
+    private String nameHabit;
+
+    private String nameImage;
+
+    private String belonging = "new";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_habit);
-        
+
         initDatePicker();
 
         dateButton = findViewById(R.id.datePickerButton);
@@ -59,7 +84,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         updateRadioGroup(noMatter);
 
-        final List<String>  pictures = Arrays.asList("time_vector", "body_vector", "baby_vector", "cake_vector", "corona_vector",
+        final List<String> pictures = Arrays.asList("time_vector", "body_vector", "baby_vector", "cake_vector", "corona_vector",
                 "moon_vector", "emoji_vector", "hiking_vector", "ice_vector", "icecream_vector", "kitchen_vector",
                 "wash_vector", "alt_vector", "self_vector", "sick_vector", "tennis_vector");
         final Spinner spinner = findViewById(R.id.spinner);
@@ -78,6 +103,39 @@ public class CreateHabitActivity extends AppCompatActivity {
                 openColorPicker();
             }
         });
+
+        mDBHelper = new DatabaseHelper(this);
+
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+        Bundle arguments = getIntent().getExtras();
+
+        inputNameHabit = findViewById(R.id.inputName);
+        oldImage = findViewById(R.id.imageOld);
+
+        if(arguments != null){
+            nameHabit = arguments.getString("name");
+            nameImage = arguments.getString("image");
+            inputNameHabit.setText(nameHabit);
+            oldImage.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.GONE);
+            colorButton.setEnabled(false);
+            oldImage.setImageResource(getResources().getIdentifier(nameImage, "drawable", getPackageName()));
+            belonging = "old";
+        }
+
+
+
 
 
     }
@@ -111,7 +169,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH);
         month = month + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        return  makeDateString(day, month, year);
+        return makeDateString(day, month, year);
     }
 
     private void initDatePicker() {
@@ -121,6 +179,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 month = month + 1;
                 String date = makeDateString(day, month, year);
+                dateForDB = makeDateStringForDB(day, month, year);
                 dateButton.setText(date);
 
             }
@@ -141,48 +200,81 @@ public class CreateHabitActivity extends AppCompatActivity {
         return " Окончание:  " + getMonthFormat(month) + " " + day + ", " + year;
     }
 
+    private String makeDateStringForDB(int day, int month, int year) {
+
+        if(month <= 10){
+            return year + "-0" + month + "-" + day;
+        }
+        else {
+            return year + "-" + month + "-" + day;
+        }
+    }
+
     private String getMonthFormat(int month) {
 
-        if(month == 1)
+        if (month == 1)
             return "янв";
-        if(month == 2)
+        if (month == 2)
             return "февр";
-        if(month == 3)
+        if (month == 3)
             return "март";
-        if(month == 4)
+        if (month == 4)
             return "апр";
-        if(month == 5)
+        if (month == 5)
             return "май";
-        if(month == 6)
+        if (month == 6)
             return "июнь";
-        if(month == 7)
+        if (month == 7)
             return "июль";
-        if(month == 8)
+        if (month == 8)
             return "авг";
-        if(month == 9)
+        if (month == 9)
             return "сент";
-        if(month == 10)
+        if (month == 10)
             return "окт";
-        if(month == 11)
+        if (month == 11)
             return "нояб";
-        if(month == 12)
+        if (month == 12)
             return "дек";
 
         return "ЯНВ";
     }
 
-    public void matterChoice(View view) {
-    }
-
     public void createHabit(View view) {
+        if (TextUtils.isEmpty(inputNameHabit.getText().toString())) {
+            Snackbar.make(view, "Введите название привычки", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        else if (TextUtils.isEmpty(inputNameHabit.getText().toString())) {
+            Snackbar.make(view, "Выберите картинку", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
+
+
+
+
+        cursor = mDb.rawQuery(
+                "INSERT INTO categories()" +
+                        ",INSERT INTO list(id_user, id_habit, icon, color, time_start, time_end, time_interval, reminder, beloning) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                new String[]{"1" , ""});
+        cursor.close();
+
+        System.out.println(String.format("#%06X", (0xFFFFFF & mDefaultColor)));
+        System.out.println(dateForDB);
+        System.out.println(selectedPeriod);
+        System.out.println(selectedTime);
+        System.out.println(resId);
+
     }
 
     public void openDatePicker(View view) {
 
         datePickerDialog.show();
-    }
-
-    public void eveningChoice(View view) {
     }
 
     public void backChoiceWindow(View view) {
@@ -195,6 +287,7 @@ public class CreateHabitActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 hour = selectedHour;
                 minute = selectedMinute;
+                selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
                 timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
             }
         };
@@ -210,16 +303,13 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         int selectedID = view.getId();
 
-        if(selectedID == R.id.noMatterButton) {
+        if (selectedID == R.id.noMatterButton) {
             updateRadioGroup(noMatter);
-        }
-        else if (selectedID == R.id.morningButton) {
+        } else if (selectedID == R.id.morningButton) {
             updateRadioGroup(morning);
-        }
-        else if (selectedID == R.id.dayButton) {
+        } else if (selectedID == R.id.dayButton) {
             updateRadioGroup(day);
-        }
-        else if (selectedID == R.id.eveningButton) {
+        } else if (selectedID == R.id.eveningButton) {
             updateRadioGroup(evening);
         }
 
@@ -233,17 +323,19 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         selected.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.radio_on));
 
-        String selectedString = String.valueOf(selected.getText());
+        selectedPeriod = String.valueOf(selected.getText());
 
     }
 
-    private class SpinnerAdapter extends ArrayAdapter<String>{
+    private int resId;
+
+    private class SpinnerAdapter extends ArrayAdapter<String> {
 
         Context context;
         List<String> picturesList;
 
         private SpinnerAdapter(Context context, List<String> pictures) {
-            super(context,  R.layout.dropdown_item, pictures);
+            super(context, R.layout.dropdown_item, pictures);
             this.context = context;
             this.picturesList = pictures;
 
@@ -254,6 +346,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             return getCustomView(position, convertView, parent);
         }
+
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             return getCustomView(position, convertView, parent);
@@ -267,7 +360,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
             Resources res = context.getResources();
             String drawableName = picturesList.get(position).toLowerCase(); // tx
-            int resId = res.getIdentifier(drawableName, "drawable", context.getPackageName());
+            resId = res.getIdentifier(drawableName, "drawable", context.getPackageName());
             Drawable drawable = res.getDrawable(resId);
             drawable.setTint(mDefaultColor);
             picture.setImageDrawable(drawable);

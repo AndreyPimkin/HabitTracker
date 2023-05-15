@@ -38,6 +38,7 @@ public class ChoiceHabitActivity extends AppCompatActivity {
 
 
 
+
     private TextView textViewName, textViewDesc;
 
     @Override
@@ -83,6 +84,8 @@ public class ChoiceHabitActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ChoiceHabitActivity.this, CreateHabitActivity.class);
+                intent.putExtra("name", habitList.get(position));
+                intent.putExtra("image", imageList.get(position));
                 startActivity(intent);
                 finish();
             }
