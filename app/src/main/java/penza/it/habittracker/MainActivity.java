@@ -2,6 +2,7 @@ package penza.it.habittracker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
+
+    SharedPreferences sPref;
+
+    final String SAVED_TEXT = "saved_text";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void saveText() {
+        sPref = getSharedPreferences("Checking", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(SAVED_TEXT, "two");
+        ed.commit();
+    }
+
+
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
+        saveText();
         finish();
     }
 
@@ -87,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
                 cursor = mDb.rawQuery("SELECT * FROM users WHERE mail = ? and password = ?", new String[]{email.getText().toString(), password.getText().toString()});
 
                 if (!cursor.isAfterLast()) {
+                    cursor.moveToFirst();
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                     intent.putExtra("mail", email.getText().toString());
                     intent.putExtra("password", password.getText().toString());
                     intent.putExtra("checkAuthorization", true);
+                    intent.putExtra("idUser", cursor.getString(0));
                     startActivity(intent);
                     finish();
                 } else {

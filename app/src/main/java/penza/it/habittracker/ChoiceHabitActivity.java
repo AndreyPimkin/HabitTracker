@@ -83,19 +83,21 @@ public class ChoiceHabitActivity extends AppCompatActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cursor = mDb.rawQuery("SELECT id_habit FROM habits WHERE name = ?",
+                        new String[]{habitList.get(position)});
+                cursor.moveToFirst();
                 Intent intent = new Intent(ChoiceHabitActivity.this, CreateHabitActivity.class);
                 intent.putExtra("name", habitList.get(position));
+                intent.putExtra("id_habit", cursor.getInt(0));
                 intent.putExtra("image", imageList.get(position));
+                cursor.close();
                 startActivity(intent);
-                finish();
             }
         });
 
     }
 
     public void backCreateWindow(View view) {
-        Intent intent = new Intent(this, ChoiceCategoryActivity.class);
-        startActivity(intent);
         finish();
     }
 

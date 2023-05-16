@@ -66,6 +66,11 @@ public class SecondActivity extends AppCompatActivity {
         setNewFragment(habitFragment);
         frameLayout = findViewById(R.id.frameMain);
 
+        Bundle arguments = getIntent().getExtras();
+        if(arguments != null){
+            checkAuthorization = arguments.getBoolean("checkAuthorization");
+        }
+
         if(checkAuthorization){
             historyImage.setImageResource(R.drawable.history);
             popImage.setImageResource(R.drawable.pop);
@@ -85,6 +90,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
     }
 
     public void openHabit(View v) {
@@ -100,7 +106,7 @@ public class SecondActivity extends AppCompatActivity {
     private void setNewFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameMain, fragment);
-        ft.addToBackStack(null);
+        //ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -145,16 +151,21 @@ public class SecondActivity extends AppCompatActivity {
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#c8c8c8"));
-
         perFragment = new PersonFragment();
         setNewFragment(perFragment);
 
     }
 
     public void openCreateWindow(View view) {
-        Intent intent = new Intent(this, ChoiceCategoryActivity.class);
-        startActivity(intent);
-        finish();
+        if(checkAuthorization){
+            Intent intent = new Intent(this, ChoiceCategoryActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Snackbar.make(root, "Для продолжения необходимо авторизоваться", Snackbar.LENGTH_SHORT).show();
+        }
+
+
     }
 
 

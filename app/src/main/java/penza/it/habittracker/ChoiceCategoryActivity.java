@@ -65,22 +65,18 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
                 intent.putExtra("name", categoryList.get(position));
                 intent.putExtra("description", descriptionList.get(position));
                 startActivity(intent);
-                finish();
             }
         });
 
     }
 
     public void backWindow(View view) {
-        Intent intent = new Intent(this, SecondActivity.class);
-        startActivity(intent);
         finish();
     }
 
     public void openCreateHabitActivity(View view) {
         Intent intent = new Intent(this, CreateHabitActivity.class);
         startActivity(intent);
-        finish();
 
     }
 

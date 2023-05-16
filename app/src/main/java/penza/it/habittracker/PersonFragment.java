@@ -37,8 +37,6 @@ public class PersonFragment extends Fragment {
         imageList.add("language");
         imageList.add("notification");
 
-
-
     }
 
     @Override
