@@ -1,5 +1,6 @@
 package penza.it.habittracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -24,6 +25,8 @@ public class SecondActivity extends AppCompatActivity {
     HistoryFragment historyFragment;
     PopFragment popFragment;
     PersonFragment perFragment;
+
+    MainFragment mainFragment;
     SharedPreferences sPref;
     final String SAVED_TEXT = "setting_user";
     private TextView textViewHabit, textViewHistory, textViewPop, textViewPerson;
@@ -52,7 +55,8 @@ public class SecondActivity extends AppCompatActivity {
         root = findViewById(R.id.two_layout);
 
         habitFragment = new HabitFragment();
-        setNewFragment(habitFragment);
+        mainFragment = new MainFragment();
+        setNewFragment(mainFragment);
 
         Bundle arguments = getIntent().getExtras(); // получает данные авторизованного пользователя
         if (arguments != null) {
@@ -86,6 +90,17 @@ public class SecondActivity extends AppCompatActivity {
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString(SAVED_TEXT, check);
         ed.apply();
+    }
+
+    private String loadText(String name) {
+        String text;
+        sPref = getSharedPreferences("Checking", Context.MODE_PRIVATE);
+        text = sPref.getString(name, "");
+        return text;
+    }
+
+    public void output(View view) {
+        System.out.println(loadText("name_habit"));
     }
 
     public void openHabit(View v)

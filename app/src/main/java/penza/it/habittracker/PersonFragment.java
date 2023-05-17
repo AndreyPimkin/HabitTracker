@@ -17,14 +17,9 @@ import java.util.ArrayList;
 
 
 public class PersonFragment extends Fragment {
-
-
+    private SettingAdapter settingAdapter;
     private ArrayList<String> settingList = new ArrayList<>(10);
     private ArrayList<String> imageList = new ArrayList<>(10);
-    private SettingAdapter settingAdapter;
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

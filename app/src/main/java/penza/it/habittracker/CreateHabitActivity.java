@@ -76,6 +76,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     final String START_TEXT = "start";
     final String END_TEXT = "end";
     final String INTERVAL = "interval";
+    final String COUNT = "count";
 
 
     @Override
@@ -120,9 +121,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         inputNameHabit = findViewById(R.id.inputName);
         oldImage = findViewById(R.id.imageOld);
-        Context context = null;
-        resId = context.getResources().getIdentifier("time_vector", "drawable", context.getPackageName());
-
+        resId = 2131231008;
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             belonging = arguments.getString("belonging");
@@ -156,6 +155,8 @@ public class CreateHabitActivity extends AppCompatActivity {
                 }
             }
         });
+
+        countHabit = Integer.parseInt(loadText(COUNT));
     }
 
     // методы ColorPicker
@@ -322,7 +323,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                     String newName = inputNameHabit.getText().toString();
 
                     mDb.execSQL("INSERT INTO " +
-                                    "list(id_user, name_habit, icon, color, time_start, time_end, reminder, time_interval, belonging) " +
+                                    "list_two(id_user, name_habit, icon, color, time_start, time_end, reminder, time_interval, belonging) " +
                                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                             new String[]{String.valueOf(idUser), newName, String.valueOf(resId), String.valueOf(mDefaultColor),
                                     timeStart, timeEnd, selectedPeriod, selectedTime, belonging});
@@ -333,7 +334,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
 
             else {
-                if (countHabit > 0) {
+                if (countHabit <= 0) {
                     if (belonging.equals("new")) {
                         ++countHabit;
                         saveText(BELONGING, "new");
@@ -353,6 +354,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                         saveText(END_TEXT, timeEnd);
                         saveText(INTERVAL, selectedPeriod);
                     }
+                    saveText(COUNT, String.valueOf(countHabit));
                 } else {
                     Snackbar.make(view, "Вы достигли лимита, пожалуйста, авторизуйтесь", Snackbar.LENGTH_SHORT).show();
                 }
@@ -365,6 +367,13 @@ public class CreateHabitActivity extends AppCompatActivity {
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString(saved, check);
         ed.apply();
+    }
+
+    private String loadText(String name) {
+        String text;
+        sPref = getSharedPreferences("Checking", MODE_PRIVATE);
+        text = sPref.getString(name, "");
+        return text;
     }
 
     private class SpinnerAdapter extends ArrayAdapter<String> {
