@@ -22,24 +22,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChoiceHabitActivity extends AppCompatActivity {
-
-    private String nameCategory;
-    private String descriptionCategory;
-
-    private ArrayList<String> habitList = new ArrayList<>(10);
-    private ArrayList<String> descriptionList = new ArrayList<>(10);
-    private ArrayList<String> imageList = new ArrayList<>(10);
+    private TextView textViewName, textViewDesc;
     private ListView listView;
-
     private HabitAdapter habitAdapter;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
-
-
-
-
-    private TextView textViewName, textViewDesc;
+    private ArrayList<String> habitList = new ArrayList<>(10);
+    private ArrayList<String> descriptionList = new ArrayList<>(10);
+    private ArrayList<String> imageList = new ArrayList<>(10);
+    private boolean checkAuthorization = false;
+    private String nameCategory;
+    private String descriptionCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,35 +44,30 @@ public class ChoiceHabitActivity extends AppCompatActivity {
         if(arguments != null){
             nameCategory = arguments.getString("name");
             descriptionCategory = arguments.getString("description");
+            checkAuthorization = arguments.getBoolean("checkAuthorization");
         }
+
         textViewName = findViewById(R.id.text_name);
         textViewDesc = findViewById(R.id.text_description);
-
         textViewName.setText(nameCategory);
         textViewDesc.setText(descriptionCategory);
 
         mDBHelper = new DatabaseHelper(this);
-
         try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
         }
-
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
-
         initList();
-
 
         habitAdapter = new HabitAdapter(this);
         listView = findViewById(R.id.listHabit);
         listView.setAdapter(habitAdapter);
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -90,11 +79,12 @@ public class ChoiceHabitActivity extends AppCompatActivity {
                 intent.putExtra("name", habitList.get(position));
                 intent.putExtra("id_habit", cursor.getInt(0));
                 intent.putExtra("image", imageList.get(position));
+                intent.putExtra("checkAuthorization", checkAuthorization);
+                intent.putExtra("belonging", "old");
                 cursor.close();
                 startActivity(intent);
             }
         });
-
     }
 
     public void backCreateWindow(View view) {
@@ -141,7 +131,6 @@ public class ChoiceHabitActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
 
     private void initList() {
         cursor = mDb.rawQuery("SELECT * FROM habits WHERE id_category = (SELECT id_category FROM categories WHERE name = ?)",

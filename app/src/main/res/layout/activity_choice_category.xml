@@ -31,7 +31,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:onClick="openCreateHabitActivity"
+        android:onClick="openCreateHabit"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginTop="70dp"

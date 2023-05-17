@@ -1,12 +1,10 @@
 package penza.it.habittracker;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,31 +18,23 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity {
-
-    private FrameLayout frameLayout;
-
+    ImageView historyImage, popImage;
     RelativeLayout root;
-    HabitFragment habitFragment = new HabitFragment();
-    HistoryFragment historyFragment = new HistoryFragment();
-
-    private TextView textViewHabit, textViewHistory, textViewPop, textViewPerson;
-
-
-    private ArrayList<String> articleList = new ArrayList<>(10);
-    private ArrayList<String> imageList = new ArrayList<>(10);
-
-
+    HabitFragment habitFragment;
+    HistoryFragment historyFragment;
     PopFragment popFragment;
     PersonFragment perFragment;
-
-    private DatabaseHelper mDBHelper;
-    private SQLiteDatabase mDb;
-    private Cursor cursor;
-
-    ImageView historyImage, popImage;
-
+    SharedPreferences sPref;
+    final String SAVED_TEXT = "setting_user";
+    private TextView textViewHabit, textViewHistory, textViewPop, textViewPerson;
+    private ArrayList<String> articleList = new ArrayList<>(10);
+    private ArrayList<String> imageList = new ArrayList<>(10);
     private boolean checkAuthorization = false;
+    private int idUser;
+    private String mailUser;
+    private String passwordUser;
 
+    private int countHabit = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,28 +47,27 @@ public class SecondActivity extends AppCompatActivity {
         historyImage = findViewById(R.id.imageHistory);
         popImage = findViewById(R.id.imagePop);
 
-
         textViewHabit.setTextColor(Color.parseColor("#c8c8c8"));
 
         root = findViewById(R.id.two_layout);
 
         habitFragment = new HabitFragment();
         setNewFragment(habitFragment);
-        frameLayout = findViewById(R.id.frameMain);
 
-        Bundle arguments = getIntent().getExtras();
-        if(arguments != null){
+        Bundle arguments = getIntent().getExtras(); // получает данные авторизованного пользователя
+        if (arguments != null) {
+            mailUser = arguments.getString("mail");
+            passwordUser = arguments.getString("password");
             checkAuthorization = arguments.getBoolean("checkAuthorization");
+            idUser = arguments.getInt("idUser");
         }
-
-        if(checkAuthorization){
+        // закрывает окна новичкам
+        if (checkAuthorization) {
             historyImage.setImageResource(R.drawable.history);
             popImage.setImageResource(R.drawable.pop);
             textViewHistory.setTextColor(Color.parseColor("#ffffff"));
             textViewPop.setTextColor(Color.parseColor("#ffffff"));
-        }
-
-        else{
+        } else {
             historyImage.setImageResource(R.drawable.lock);
             popImage.setImageResource(R.drawable.lock);
             textViewHistory.setTextColor(Color.parseColor("#81C8C8C8"));
@@ -87,86 +76,82 @@ public class SecondActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public void onBackPressed() {
-        finish();
+    // метод прохождения обучения
+    private void training() {
+        saveText("already_used");
     }
 
-    public void openHabit(View v) {
+    void saveText(String check) {
+        sPref = getSharedPreferences("Checking", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(SAVED_TEXT, check);
+        ed.apply();
+    }
+
+    public void openHabit(View v)
+    {
         textViewHabit.setTextColor(Color.parseColor("#c8c8c8"));
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#ffffff"));
-
         habitFragment = new HabitFragment();
         setNewFragment(habitFragment);
     }
 
-    private void setNewFragment(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameMain, fragment);
-        //ft.addToBackStack(null);
-        ft.commit();
-    }
-
-    public void openHistory(View v) {
-        if(checkAuthorization){
+    public void openHistory(View v)
+    {
+        if (checkAuthorization) {
             textViewHabit.setTextColor(Color.parseColor("#ffffff"));
             textViewHistory.setTextColor(Color.parseColor("#c8c8c8"));
             textViewPop.setTextColor(Color.parseColor("#ffffff"));
             textViewPerson.setTextColor(Color.parseColor("#ffffff"));
             habitFragment = new HabitFragment();
             setNewFragment(historyFragment);
-
-        }
-        else {
-            Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();
-        }
-
-
-
+        } else {Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();}
     }
 
-    public void openPop(View v) {
-
-        if(checkAuthorization){
+    public void openPop(View v)
+    {
+        if (checkAuthorization) {
             textViewHabit.setTextColor(Color.parseColor("#ffffff"));
             textViewHistory.setTextColor(Color.parseColor("#ffffff"));
             textViewPop.setTextColor(Color.parseColor("#c8c8c8"));
             textViewPerson.setTextColor(Color.parseColor("#ffffff"));
-
             popFragment = new PopFragment();
             setNewFragment(popFragment);
-        }
-        else{
-            Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();
-        }
+        } else {Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();}
 
     }
 
-    public void openPerson(View v) {
-
+    public void openPerson(View v)
+    {
         textViewHabit.setTextColor(Color.parseColor("#ffffff"));
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#c8c8c8"));
         perFragment = new PersonFragment();
         setNewFragment(perFragment);
-
     }
 
-    public void openCreateWindow(View view) {
-        if(checkAuthorization){
-            Intent intent = new Intent(this, ChoiceCategoryActivity.class);
-            startActivity(intent);
-        }
-        else{
-            Snackbar.make(root, "Для продолжения необходимо авторизоваться", Snackbar.LENGTH_SHORT).show();
-        }
-
-
+    public void openChoiceCategory(View view) {
+        Intent intent = new Intent(this, ChoiceCategoryActivity.class);
+        intent.putExtra("checkAuthorization", checkAuthorization);
+        intent.putExtra("idUser", idUser);
+        intent.putExtra("count", countHabit);
+        startActivity(intent);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    private void setNewFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameMain, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 
 }

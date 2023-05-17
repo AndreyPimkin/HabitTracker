@@ -41,6 +41,6 @@
     <string name="clear_date">Сброс</string>
     <string name="registration">Регистрация</string>
     <string name="name_habit">Название привычки</string>
-    <string name="version">Version: 0.1.0</string>
+    <string name="version">Version: 0.2.2</string>
     <string name="new_text">Откройте для себя что-то новое</string>
 </resources>

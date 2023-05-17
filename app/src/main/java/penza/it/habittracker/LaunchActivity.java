@@ -9,10 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LaunchActivity extends AppCompatActivity {
 
     SharedPreferences sPref;
-    final String SAVED_TEXT = "saved_text";
 
-    private String checkOpen = "one";
-
+    final String SAVED_TEXT = "setting_user";
+    private String checkOpen = "no_used";
 
 
     @Override
@@ -20,14 +19,15 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        //loadText();
-
+        loadText();
 
         Intent intent;
-        if(checkOpen.equals("one")) {
+
+
+        if(checkOpen.equals("no_used")) {   // Если пользователь не использовал приложение
             intent = new Intent(this, MainActivity.class);
         }
-        else {
+        else {       // Если пользователь уже использовал приложение
             intent = new Intent(this, SecondActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

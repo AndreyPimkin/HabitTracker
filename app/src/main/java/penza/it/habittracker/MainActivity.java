@@ -22,21 +22,22 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     RelativeLayout root;
+    SharedPreferences sPref;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
 
-    SharedPreferences sPref;
-
-    final String SAVED_TEXT = "saved_text";
+    final String SAVED_TEXT = "setting_user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // для отображения всплывающего окна авторизации
         root = findViewById(R.id.root_layout);
 
+        // инициализация БД
         mDBHelper = new DatabaseHelper(this);
 
         try {
@@ -53,18 +54,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void saveText() {
+    void saveText(String check) {
         sPref = getSharedPreferences("Checking", MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, "two");
-        ed.commit();
+        ed.putString(SAVED_TEXT, check);
+        ed.apply();
     }
 
 
+    // открывает дальнейшее окно без авторизации
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
-        saveText();
+        saveText("no_used");
         finish();
     }
 
@@ -102,12 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!cursor.isAfterLast()) {
                     cursor.moveToFirst();
+                    // перенаправляет на второе активити, но с данными авторизации
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                     intent.putExtra("mail", email.getText().toString());
                     intent.putExtra("password", password.getText().toString());
                     intent.putExtra("checkAuthorization", true);
                     intent.putExtra("idUser", cursor.getString(0));
                     startActivity(intent);
+                    saveText("already_used");
                     finish();
                 } else {
                     Snackbar.make(root, "Пользователь не найден", Snackbar.LENGTH_SHORT).show();
@@ -117,9 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
             }
         });
-
         builder.setView(authorization_window);
-
         AlertDialog dialog = builder.create();
         dialog.show();
 

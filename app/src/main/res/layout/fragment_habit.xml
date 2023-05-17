@@ -14,7 +14,7 @@
         android:src="@drawable/add" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:onClick="openCreateWindow"
+        android:onClick="openChoiceCategory"
         android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginTop="170dp"

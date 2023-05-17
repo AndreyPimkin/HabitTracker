@@ -22,41 +22,40 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChoiceCategoryActivity extends AppCompatActivity {
-
-    private ArrayList<String> categoryList = new ArrayList<>(10);
-    private ArrayList<String> descriptionList = new ArrayList<>(10);
-    private ArrayList<String> imageList = new ArrayList<>(10);
     private ListView listView;
     private CategoryAdapter categoryAdapter;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
+    private ArrayList<String> categoryList = new ArrayList<>(10);
+    private ArrayList<String> descriptionList = new ArrayList<>(10);
+    private ArrayList<String> imageList = new ArrayList<>(10);
+    private boolean checkAuthorization = false;
+    private int idUser;
 
+    private int countHabit = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_category);
-        mDBHelper = new DatabaseHelper(this);
 
+        mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
         }
-
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
-
         initList();
 
         categoryAdapter = new CategoryAdapter(this);
         listView = findViewById(R.id.listCategory);
         listView.setAdapter(categoryAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -64,9 +63,18 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChoiceCategoryActivity.this, ChoiceHabitActivity.class);
                 intent.putExtra("name", categoryList.get(position));
                 intent.putExtra("description", descriptionList.get(position));
+                intent.putExtra("checkAuthorization", checkAuthorization);
+                intent.putExtra("count", countHabit);
                 startActivity(intent);
             }
         });
+
+        Bundle arguments = getIntent().getExtras();
+        if (arguments != null) {
+            checkAuthorization = arguments.getBoolean("checkAuthorization");
+            idUser = arguments.getInt("idUser");
+            countHabit = arguments.getInt("count");
+        }
 
     }
 
@@ -74,8 +82,11 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
         finish();
     }
 
-    public void openCreateHabitActivity(View view) {
+    public void openCreateHabit(View view) {
         Intent intent = new Intent(this, CreateHabitActivity.class);
+        intent.putExtra("checkAuthorization", checkAuthorization);
+        intent.putExtra("belonging", "new");
+        intent.putExtra("count", countHabit);
         startActivity(intent);
 
     }
