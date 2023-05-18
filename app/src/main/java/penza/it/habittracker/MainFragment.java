@@ -2,6 +2,7 @@ package penza.it.habittracker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,14 +24,25 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
-    private Cursor cursor;
+    private Cursor cursor, cursorTwo;
+    SharedPreferences sPref;
     private HabitAdapter habitAdapter;
     private ArrayList<String> nameList = new ArrayList<>();
     private ArrayList<String> iconList = new ArrayList<>();
     private ArrayList<String> colorList = new ArrayList<>();
     private ArrayList<String> timeStartList = new ArrayList<>();
     private ArrayList<String> periodList = new ArrayList<>();
+    private boolean checklist = false, checkListTwo = false ;
+    private boolean checkAuthorization = false;
+    private int idUser;
 
+    final String BELONGING = "belonging";
+    final String NAME_TEXT = "name_habit";
+    final String ICON_TEXT = "icon";
+    final String COLOR_TEXT = "color";
+    final String START_TEXT = "start";
+    final String END_TEXT = "end";
+    final String INTERVAL = "interval";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,15 +58,38 @@ public class MainFragment extends Fragment {
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
-        initList();
+
+        if(checkAuthorization){
+            if(checklist){
+                initList("SELECT habits.name, list.icon, list.color, list.time_start FROM list " +
+                            "INNER JOIN habits ON list.id_habit = habits.id_habit " +
+                            "WHERE id_user = ?");
+            }
+            if(checkListTwo){
+                initList("SELECT name_habit, icon, color, time_start FROM list WHERE id_user = ?");
+            }
+        }
+
+        else{
+            initListNoAuthorization();
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pop, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.listPop);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        assert getArguments() != null;
+        checkAuthorization = getArguments().getBoolean("checkAuthorization");
+        if(checkAuthorization){
+            checklist = getArguments().getBoolean("checkListOne");
+            checkListTwo = getArguments().getBoolean("checkListTwo");
+            idUser = getArguments().getInt("idUser");
+        }
+
+        ListView listView = (ListView) view.findViewById(R.id.listHabitMain);
         habitAdapter = new HabitAdapter(getActivity());
         listView.setAdapter(habitAdapter);
         return view;
@@ -90,12 +125,14 @@ public class MainFragment extends Fragment {
 
             TextView signTextView = (TextView) convertView.findViewById(R.id.nameHabitTwo);
             signTextView.setText(nameList.get(position));
-
             ImageView image = (ImageView) convertView.findViewById(R.id.imageHabit);
-            image.setImageResource(getResources().getIdentifier(iconList.get(position), "drawable", requireActivity().getPackageName()));
 
+            System.out.println(nameList.get(position));
+            System.out.println(iconList.get(position));
+            System.out.println(colorList.get(position));
             int iColor = Integer.parseInt(colorList.get(position));
             String sColor = String.format("#%06X", (0xFFFFFF & iColor));
+
             RelativeLayout relativeLayout = (RelativeLayout) convertView.findViewById(R.id.layoutHabit);
             relativeLayout.setBackgroundColor(iColor);
 
@@ -104,8 +141,15 @@ public class MainFragment extends Fragment {
     }
 
 
-    private void initList() {
-        cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{idUser});
+    private String loadText(String name) {
+        String text;
+        sPref = this.getActivity().getSharedPreferences("Checking", Context.MODE_PRIVATE);
+        text = sPref.getString(name, "");
+        return text;
+    }
+
+    private void initList(String query) {
+        cursor = mDb.rawQuery(query, new String[]{String.valueOf(idUser)});
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 nameList.add(cursor.getString(1));
@@ -119,6 +163,22 @@ public class MainFragment extends Fragment {
         cursor.close();
     }
 
-
+    private void initListNoAuthorization(){
+        cursor = mDb.rawQuery("SELECT name FROM habits WHERE id_habit = ?", new String[]{loadText(NAME_TEXT)});
+        if(loadText(BELONGING).equals("old")){
+            if(!cursor.isAfterLast()){
+                cursor.moveToFirst();
+                nameList.add(cursor.getString(0));
+            }
+        }
+        else{
+            nameList.add(loadText(NAME_TEXT));
+        }
+        iconList.add(loadText(ICON_TEXT));
+        colorList.add(loadText(COLOR_TEXT));
+        timeStartList.add(loadText(START_TEXT));
+        periodList.add(loadText(INTERVAL));
+        cursor.moveToNext();
+    }
 
 }

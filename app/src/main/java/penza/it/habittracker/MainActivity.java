@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
-        saveText("no_used");
+        saveText("used");
         finish();
     }
 

@@ -3,6 +3,8 @@ package penza.it.habittracker;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -19,13 +21,15 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity {
+    private DatabaseHelper mDBHelper;
+    private SQLiteDatabase mDb;
+    private Cursor cursor;
     ImageView historyImage, popImage;
     RelativeLayout root;
     HabitFragment habitFragment;
     HistoryFragment historyFragment;
     PopFragment popFragment;
     PersonFragment perFragment;
-
     MainFragment mainFragment;
     SharedPreferences sPref;
     final String SAVED_TEXT = "setting_user";
@@ -36,8 +40,9 @@ public class SecondActivity extends AppCompatActivity {
     private int idUser;
     private String mailUser;
     private String passwordUser;
-
     private int countHabit = 0;
+    private boolean checklist = false, checkListTwo = false ;
+    final String COUNT = "count";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +59,6 @@ public class SecondActivity extends AppCompatActivity {
 
         root = findViewById(R.id.two_layout);
 
-        habitFragment = new HabitFragment();
-        mainFragment = new MainFragment();
-        setNewFragment(mainFragment);
-
         Bundle arguments = getIntent().getExtras(); // получает данные авторизованного пользователя
         if (arguments != null) {
             mailUser = arguments.getString("mail");
@@ -65,17 +66,50 @@ public class SecondActivity extends AppCompatActivity {
             checkAuthorization = arguments.getBoolean("checkAuthorization");
             idUser = arguments.getInt("idUser");
         }
-        // закрывает окна новичкам
         if (checkAuthorization) {
+            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            if(!cursor.isAfterLast()) checklist = true;
+
+            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            if (!cursor.isAfterLast()) checkListTwo = true;
             historyImage.setImageResource(R.drawable.history);
             popImage.setImageResource(R.drawable.pop);
             textViewHistory.setTextColor(Color.parseColor("#ffffff"));
             textViewPop.setTextColor(Color.parseColor("#ffffff"));
-        } else {
+
+            if(checklist | checkListTwo){
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("checkAuthorization", checkAuthorization);
+                bundle.putInt("idUser", idUser);
+                bundle.putBoolean("checkListOne", checklist);
+                bundle.putBoolean("checkListTwo", checkListTwo);
+                mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
+                setNewFragment(mainFragment);
+            }
+            else{
+                habitFragment = new HabitFragment();
+                setNewFragment(habitFragment);
+            }
+        }
+
+        else {
             historyImage.setImageResource(R.drawable.lock);
             popImage.setImageResource(R.drawable.lock);
             textViewHistory.setTextColor(Color.parseColor("#81C8C8C8"));
             textViewPop.setTextColor(Color.parseColor("#81C8C8C8"));
+
+            if(Integer.parseInt(loadText(COUNT)) > 0){
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("checkAuthorization", checkAuthorization);
+                mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
+                setNewFragment(mainFragment);
+            }
+            else{
+                habitFragment = new HabitFragment();
+                setNewFragment(habitFragment);
+            }
         }
 
     }

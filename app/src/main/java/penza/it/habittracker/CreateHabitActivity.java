@@ -348,7 +348,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                         ++countHabit;
                         saveText(BELONGING, "old");
                         saveText(NAME_TEXT, String.valueOf(idHabit));
-                        saveText(ICON_TEXT, nameImage);
+                        saveText(ICON_TEXT, String.valueOf(getResources().getIdentifier(nameImage, "drawable", getPackageName())));
                         saveText(COLOR_TEXT, String.valueOf(mDefaultColor));
                         saveText(START_TEXT, timeStart);
                         saveText(END_TEXT, timeEnd);
