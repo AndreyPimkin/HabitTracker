@@ -3,14 +3,20 @@ package penza.it.habittracker;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
+    private ListView listView;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor, cursorTwo;
@@ -89,9 +96,19 @@ public class MainFragment extends Fragment {
             idUser = getArguments().getInt("idUser");
         }
 
-        ListView listView = (ListView) view.findViewById(R.id.listHabitMain);
+        listView = (ListView) view.findViewById(R.id.listHabitMain);
         habitAdapter = new HabitAdapter(getActivity());
         listView.setAdapter(habitAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+
+
         return view;
     }
 
@@ -125,18 +142,39 @@ public class MainFragment extends Fragment {
 
             TextView signTextView = (TextView) convertView.findViewById(R.id.nameHabitTwo);
             signTextView.setText(nameList.get(position));
-            ImageView image = (ImageView) convertView.findViewById(R.id.imageHabit);
-
-            System.out.println(nameList.get(position));
-            System.out.println(iconList.get(position));
-            System.out.println(colorList.get(position));
+            ImageView image = (ImageView) convertView.findViewById(R.id.imageIconHabit);
             int iColor = Integer.parseInt(colorList.get(position));
-            String sColor = String.format("#%06X", (0xFFFFFF & iColor));
-
             RelativeLayout relativeLayout = (RelativeLayout) convertView.findViewById(R.id.layoutHabit);
-            relativeLayout.setBackgroundColor(iColor);
+            SomeDrawable drawable = new SomeDrawable(iColor, iColor, iColor,1,Color.BLACK, 20);
+            relativeLayout.setBackgroundDrawable(drawable);
+            Resources res = getActivity().getResources();
+            int resID = Integer.parseInt(iconList.get(position));
+            Drawable db = res.getDrawable(resID);
+            db.setTint(getResources().getColor(R.color.white));
+            image.setImageDrawable(db);
+            ImageButton button = (ImageButton) convertView.findViewById(R.id.buttonMore);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    System.out.println(position);
+                }
+            });
+
+
+
 
             return convertView;
+        }
+    }
+
+    public class SomeDrawable extends GradientDrawable {
+
+        public SomeDrawable(int pStartColor, int pCenterColor, int pEndColor, int pStrokeWidth, int pStrokeColor, float cornerRadius) {
+            super(Orientation.BOTTOM_TOP,new int[]{pStartColor,pCenterColor,pEndColor});
+            setStroke(pStrokeWidth,pStrokeColor);
+            setShape(GradientDrawable.RECTANGLE);
+            setCornerRadius(cornerRadius);
+
         }
     }
 
