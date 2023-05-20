@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChoiceHabitActivity extends AppCompatActivity {
@@ -34,6 +33,7 @@ public class ChoiceHabitActivity extends AppCompatActivity {
     private boolean checkAuthorization = false;
     private String nameCategory;
     private String descriptionCategory;
+    private int idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class ChoiceHabitActivity extends AppCompatActivity {
 
         Bundle arguments = getIntent().getExtras();
         if(arguments != null){
+            idUser = arguments.getInt("idUser");
             nameCategory = arguments.getString("name");
             descriptionCategory = arguments.getString("description");
             checkAuthorization = arguments.getBoolean("checkAuthorization");
@@ -53,11 +54,13 @@ public class ChoiceHabitActivity extends AppCompatActivity {
         textViewDesc.setText(descriptionCategory);
 
         mDBHelper = new DatabaseHelper(this);
-        try {
+
+      /*  try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
-        }
+        }*/
+
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {
@@ -77,7 +80,8 @@ public class ChoiceHabitActivity extends AppCompatActivity {
                 cursor.moveToFirst();
                 Intent intent = new Intent(ChoiceHabitActivity.this, CreateHabitActivity.class);
                 intent.putExtra("name", habitList.get(position));
-                intent.putExtra("id_habit", cursor.getInt(0));
+                intent.putExtra("idHabit", cursor.getInt(0));
+                intent.putExtra("idUser", idUser);
                 intent.putExtra("image", imageList.get(position));
                 intent.putExtra("checkAuthorization", checkAuthorization);
                 intent.putExtra("belonging", "old");

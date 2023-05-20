@@ -3,7 +3,9 @@ package penza.it.habittracker;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.SQLException;
@@ -309,27 +311,46 @@ public class CreateHabitActivity extends AppCompatActivity {
             Snackbar.make(view, "Выберите время уведомлений", Snackbar.LENGTH_SHORT).show();
         } else {
             if (checkAuthorization) {
+                ContentValues cv = new ContentValues();
                 if (!checkSwitch) {
                     selectedTime = "none";
                 }
                 if (belonging.equals("old")) {
-                    mDb.execSQL("INSERT INTO " +
-                                    "list (id_user, id_habit, icon, color, time_start, time_end, reminder, time_interval,  belonging) " +
-                                        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            new String[]{String.valueOf(idUser), String.valueOf(idHabit), nameImage, String.valueOf(mDefaultColor),
-                                    timeStart, timeEnd, selectedPeriod, selectedTime, belonging});
-
-                } else {
+                    cv.put("id_user", idUser);
+                    cv.put("id_habit", idHabit);
+                    cv.put("icon", String.valueOf(getResources().getIdentifier(nameImage, "drawable", getPackageName())));
+                    cv.put("color", String.valueOf(mDefaultColor));
+                    cv.put("time_start", timeStart);
+                    cv.put("time_end", timeEnd);
+                    cv.put("reminder", selectedPeriod);
+                    cv.put("time_interval", selectedTime);
+                    cv.put("status", "Создана");
+                    mDb.insert("list", null, cv);
+                    System.out.println("Добавлена старая");
+                }
+                else {
                     String newName = inputNameHabit.getText().toString();
-
-                    mDb.execSQL("INSERT INTO " +
-                                    "list_two(id_user, name_habit, icon, color, time_start, time_end, reminder, time_interval, belonging) " +
-                                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            new String[]{String.valueOf(idUser), newName, String.valueOf(resId), String.valueOf(mDefaultColor),
-                                    timeStart, timeEnd, selectedPeriod, selectedTime, belonging});
+                    cv.put("id_user",  idUser);
+                    cv.put("name_habit", newName);
+                    cv.put("icon", String.valueOf(resId));
+                    cv.put("color", String.valueOf(mDefaultColor));
+                    cv.put("time_start", timeStart);
+                    cv.put("time_end", timeEnd);
+                    cv.put("reminder", selectedPeriod);
+                    cv.put("time_interval", selectedTime);
+                    cv.put("status", "Создана");
+                    mDb.insert("list_new", null, cv);
+                    System.out.println("Добавлена новая");
                 }
 
-                Snackbar.make(view, "Успешно", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateHabitActivity.this, SecondActivity.class);
+                intent.putExtra("checkAuthorization", true);
+                intent.putExtra("idUser", idUser);
+                startActivity(intent);
+                finish();
+
+
+
             }
 
 
@@ -358,6 +379,9 @@ public class CreateHabitActivity extends AppCompatActivity {
                 } else {
                     Snackbar.make(view, "Вы достигли лимита, пожалуйста, авторизуйтесь", Snackbar.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(CreateHabitActivity.this, SecondActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
     }

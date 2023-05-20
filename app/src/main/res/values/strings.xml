@@ -43,4 +43,6 @@
     <string name="name_habit">Название привычки</string>
     <string name="version">Version: 0.2.2</string>
     <string name="new_text">Откройте для себя что-то новое</string>
+    <string name="finish_habit">Завершить</string>
+    <string name="delete_habit">Удалить</string>
 </resources>

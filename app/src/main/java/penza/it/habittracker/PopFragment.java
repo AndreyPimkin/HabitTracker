@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -33,11 +32,13 @@ public class PopFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDBHelper = new DatabaseHelper(getActivity());
-        try {
+
+      /*  try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
-        }
+        }*/
+
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {

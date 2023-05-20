@@ -62,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    int i = 0;
     // открывает дальнейшее окно без авторизации
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
         saveText("used");
         finish();
+
     }
 
     public void openAuthorization(View v) {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(root, "Введите почту", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
+
                 if (password.getText().toString().length() < 5) {
                     Snackbar.make(root, "Быть не менее 5 символов", Snackbar.LENGTH_SHORT).show();
                     return;
@@ -106,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
                     cursor.moveToFirst();
                     // перенаправляет на второе активити, но с данными авторизации
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                    intent.putExtra("mail", email.getText().toString());
-                    intent.putExtra("password", password.getText().toString());
+                   // intent.putExtra("mail", email.getText().toString());
+                    //intent.putExtra("password", password.getText().toString());
                     intent.putExtra("checkAuthorization", true);
-                    intent.putExtra("idUser", cursor.getString(0));
-                    startActivity(intent);
+                    intent.putExtra("idUser", cursor.getInt(0));
                     saveText("already_used");
+                    startActivity(intent);
                     finish();
                 } else {
                     Snackbar.make(root, "Пользователь не найден", Snackbar.LENGTH_SHORT).show();

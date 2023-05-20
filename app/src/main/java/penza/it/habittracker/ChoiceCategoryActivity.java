@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChoiceCategoryActivity extends AppCompatActivity {
@@ -41,11 +40,13 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choice_category);
 
         mDBHelper = new DatabaseHelper(this);
-        try {
+
+     /*   try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
-        }
+        }*/
+
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {
@@ -62,6 +63,7 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ChoiceCategoryActivity.this, ChoiceHabitActivity.class);
                 intent.putExtra("name", categoryList.get(position));
+                intent.putExtra("idUser", idUser);
                 intent.putExtra("description", descriptionList.get(position));
                 intent.putExtra("checkAuthorization", checkAuthorization);
                 intent.putExtra("count", countHabit);
@@ -85,6 +87,7 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
     public void openCreateHabit(View view) {
         Intent intent = new Intent(this, CreateHabitActivity.class);
         intent.putExtra("checkAuthorization", checkAuthorization);
+        intent.putExtra("idUser", idUser);
         intent.putExtra("belonging", "new");
         intent.putExtra("count", countHabit);
         startActivity(intent);

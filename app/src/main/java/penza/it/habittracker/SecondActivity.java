@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -59,19 +60,42 @@ public class SecondActivity extends AppCompatActivity {
 
         root = findViewById(R.id.two_layout);
 
-        Bundle arguments = getIntent().getExtras(); // получает данные авторизованного пользователя
+        mDBHelper = new DatabaseHelper(this);
+
+       /* try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }*/
+
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+
+        Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            mailUser = arguments.getString("mail");
-            passwordUser = arguments.getString("password");
+          //  mailUser = arguments.getString("mail");
+          //  passwordUser = arguments.getString("password");
             checkAuthorization = arguments.getBoolean("checkAuthorization");
-            idUser = arguments.getInt("idUser");
         }
         if (checkAuthorization) {
+            idUser = arguments.getInt("idUser");
             cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{String.valueOf(idUser)});
-            if(!cursor.isAfterLast()) checklist = true;
-
+            if(!cursor.isAfterLast()) {
+                cursor.moveToFirst();
+                checklist = true;
+            }
             cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ?", new String[]{String.valueOf(idUser)});
-            if (!cursor.isAfterLast()) checkListTwo = true;
+
+            if (!cursor.isAfterLast()){
+                cursor.moveToFirst();
+                checkListTwo = true;
+            }
+
+            cursor.close();
             historyImage.setImageResource(R.drawable.history);
             popImage.setImageResource(R.drawable.pop);
             textViewHistory.setTextColor(Color.parseColor("#ffffff"));
@@ -143,8 +167,44 @@ public class SecondActivity extends AppCompatActivity {
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#ffffff"));
-        habitFragment = new HabitFragment();
-        setNewFragment(habitFragment);
+
+        if (checkAuthorization) {
+            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            if(!cursor.isAfterLast()) checklist = true;
+
+            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            if (!cursor.isAfterLast()) checkListTwo = true;
+
+            if(checklist | checkListTwo){
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("checkAuthorization", checkAuthorization);
+                bundle.putInt("idUser", idUser);
+                bundle.putBoolean("checkListOne", checklist);
+                bundle.putBoolean("checkListTwo", checkListTwo);
+                mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
+                setNewFragment(mainFragment);
+            }
+            else{
+                habitFragment = new HabitFragment();
+                setNewFragment(habitFragment);
+            }
+        }
+
+        else {
+
+            if(Integer.parseInt(loadText(COUNT)) > 0){
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("checkAuthorization", checkAuthorization);
+                mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
+                setNewFragment(mainFragment);
+            }
+            else{
+                habitFragment = new HabitFragment();
+                setNewFragment(habitFragment);
+            }
+        }
     }
 
     public void openHistory(View v)
@@ -188,6 +248,7 @@ public class SecondActivity extends AppCompatActivity {
         intent.putExtra("idUser", idUser);
         intent.putExtra("count", countHabit);
         startActivity(intent);
+        finish();
     }
 
 
