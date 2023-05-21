@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     final String SAVED_TEXT = "setting_user";
 
+    final String ID_TEXT = "id_user";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void saveText(String check) {
+    void saveText(String saved, String check) {
         sPref = getSharedPreferences("Checking", MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, check);
+        ed.putString(saved, check);
         ed.apply();
     }
 
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);
-        saveText("used");
+        saveText(SAVED_TEXT,"used");
         finish();
 
     }
@@ -109,11 +111,12 @@ public class MainActivity extends AppCompatActivity {
                     cursor.moveToFirst();
                     // перенаправляет на второе активити, но с данными авторизации
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                   // intent.putExtra("mail", email.getText().toString());
+                    //intent.putExtra("mail", email.getText().toString());
                     //intent.putExtra("password", password.getText().toString());
                     intent.putExtra("checkAuthorization", true);
                     intent.putExtra("idUser", cursor.getInt(0));
-                    saveText("already_used");
+                    saveText(SAVED_TEXT,"already_used");
+                    saveText(ID_TEXT, String.valueOf(cursor.getInt(0)));
                     startActivity(intent);
                     finish();
                 } else {

@@ -128,7 +128,6 @@ public class CreateHabitActivity extends AppCompatActivity {
         if (arguments != null) {
             belonging = arguments.getString("belonging");
             checkAuthorization = arguments.getBoolean("checkAuthorization");
-            countHabit = arguments.getInt("count");
             if (checkAuthorization) {
                 idUser = arguments.getInt("idUser");
             }

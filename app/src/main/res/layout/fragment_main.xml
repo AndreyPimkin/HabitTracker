@@ -34,33 +34,20 @@
             android:src="@drawable/add_vector"
             app:tint="@color/white" />
 
-        <ScrollView
-
+        <ListView
+            android:id="@+id/listHabitMain"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:layout_marginTop="200dp"
-            android:fillViewport="true"
-            android:scrollbars="none">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/listHabitMain"
-                    android:layout_width="match_parent"
-                    android:layout_height="415dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@color/list_two"
-                    android:divider="@null"
-                    android:dividerHeight="15dp" />
-
-            </RelativeLayout>
-        </ScrollView>
+            android:scrollbars="none"
+            android:layout_height="415dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="215dp"
+            android:background="@color/list_two"
+            android:divider="@null"
+            android:dividerHeight="15dp" />
 
     </RelativeLayout>
+
+
 
 
 

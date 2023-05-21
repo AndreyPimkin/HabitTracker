@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,14 +24,17 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment{
     private ListView listView;
+    private TextView monthYearText;
+    private RecyclerView calendarRecyclerView;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;
@@ -52,18 +56,12 @@ public class MainFragment extends Fragment {
     final String START_TEXT = "start";
     final String END_TEXT = "end";
     final String INTERVAL = "interval";
+    final String COUNT = "count";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDBHelper = new DatabaseHelper(getActivity());
-
-       /* try {
-            mDBHelper.updateDataBase();
-        } catch (IOException mIOException) {
-            throw new Error("UnableToUpdateDatabase");
-        }*/
-
         try {
             mDb = mDBHelper.getWritableDatabase();
         } catch (SQLException mSQLException) {
@@ -72,6 +70,7 @@ public class MainFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -89,11 +88,11 @@ public class MainFragment extends Fragment {
             if(checklist){
                 initList("SELECT habits.name, list.icon, list.color, list.time_start FROM list " +
                         "INNER JOIN habits ON list.id_habit = habits.id_habit " +
-                        "WHERE id_user = ?");
+                        "WHERE id_user = ? AND status = ?");
             }
 
             if(checkListTwo){
-                initList("SELECT name_habit, icon, color, time_start FROM list_new WHERE id_user = ?");
+                initList("SELECT name_habit, icon, color, time_start FROM list_new WHERE id_user = ? AND status = ?");
             }
         }
 
@@ -112,10 +111,9 @@ public class MainFragment extends Fragment {
             }
         });
 
-
-
         return view;
     }
+
 
     private class HabitAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
@@ -168,14 +166,33 @@ public class MainFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println(position);
                     PopupMenu popupMenu = new PopupMenu(getActivity(), button);
                     popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            // Toast message on menu item clicked
-                            Toast.makeText(getActivity(), "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+
+                            if(checkAuthorization){
+                                if(menuItem.getTitle().equals("Удалить")) {
+                                    deleteHabit(nameList.get(position), position);
+                                }
+                                if(menuItem.getTitle().equals("Завершить")){
+                                    completeHabit(nameList.get(position), position);
+                                }
+                            }
+                            else{
+                                deleteText(INTERVAL);
+                                deleteText(END_TEXT);
+                                deleteText(START_TEXT);
+                                deleteText(COLOR_TEXT);
+                                deleteText(ICON_TEXT);
+                                deleteText(NAME_TEXT);
+                                deleteText(BELONGING);
+                                saveText(COUNT, "0");
+                                nameList.remove(0);
+                                listView.setAdapter(habitAdapter);
+                            }
+
                             return true;
                         }
                     });
@@ -202,7 +219,6 @@ public class MainFragment extends Fragment {
         }
     }
 
-
     private String loadText(String name) {
         String text;
         sPref = this.getActivity().getSharedPreferences("Checking", Context.MODE_PRIVATE);
@@ -210,8 +226,21 @@ public class MainFragment extends Fragment {
         return text;
     }
 
+    private void deleteText(String name) {
+
+        sPref = this.getActivity().getSharedPreferences("Checking", Context.MODE_PRIVATE);
+        sPref.edit().remove(name).apply();
+    }
+
+    void saveText(String saved, String check) {
+        sPref = this.getActivity().getSharedPreferences("Checking", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(saved, check);
+        ed.apply();
+    }
+
     private void initList(String query) {
-        cursor = mDb.rawQuery(query, new String[]{String.valueOf(idUser)});
+        cursor = mDb.rawQuery(query, new String[]{String.valueOf(idUser), "Создана"});
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 nameList.add(cursor.getString(0));
@@ -242,8 +271,30 @@ public class MainFragment extends Fragment {
         cursor.close();
     }
 
-    private void deleteHabit(){
+    private void deleteHabit(String nameHabit, int position){
+        cursor = mDb.rawQuery("SELECT * FROM habits WHERE name = ?", new String[]{nameHabit});
+        if(cursor.isAfterLast()){
+            mDb.execSQL("DELETE FROM list_new WHERE name_habit = ?", new String[]{nameHabit});
+        }
+        else{
+            mDb.execSQL("DELETE FROM list WHERE id_habit = (SELECT id_habit FROM habits WHERE name = ?)", new String[]{nameHabit});
+        }
+        cursor.close();
+        nameList.remove(position);
+        listView.setAdapter(habitAdapter);
+    }
 
+    private void completeHabit(String nameHabit, int position){
+        cursor = mDb.rawQuery("SELECT * FROM habits WHERE name = ?", new String[]{nameHabit});
+        if(cursor.isAfterLast()){
+            mDb.execSQL("UPDATE list_new SET status = 'Завершена' WHERE name_habit = ?", new String[]{nameHabit});
+        }
+        else{
+            mDb.execSQL("UPDATE list SET status = 'Завершена' WHERE id_habit = (SELECT id_habit FROM habits WHERE name = ?)", new String[]{nameHabit});
+        }
+        cursor.close();
+        nameList.remove(position);
+        listView.setAdapter(habitAdapter);
     }
 
 }

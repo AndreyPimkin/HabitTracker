@@ -11,32 +11,34 @@ public class LaunchActivity extends AppCompatActivity {
     SharedPreferences sPref;
 
     final String SAVED_TEXT = "setting_user";
-    private String checkOpen = "no_used";
-
-
+    final String ID_TEXT = "id_user";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        //loadText();
+        Intent intent = null;
 
-        Intent intent;
-
-
-        if(checkOpen.equals("no_used")) {   // Если пользователь не использовал приложение
-            intent = new Intent(this, MainActivity.class);
+        if(loadText(SAVED_TEXT).equals("used")){
+            intent = new Intent(LaunchActivity.this, SecondActivity.class);
         }
-        else {       // Если пользователь уже использовал приложение
-            intent = new Intent(this, SecondActivity.class);
+        else if(loadText(SAVED_TEXT).equals("already_used")) {
+            intent = new Intent(LaunchActivity.this, SecondActivity.class);
+            intent.putExtra("checkAuthorization", true);
+            intent.putExtra("idUser",Integer.parseInt(loadText(ID_TEXT)));
+        }
+        else {
+            intent = new Intent(LaunchActivity.this, MainActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
         startActivity(intent);
+        finish();
     }
 
-    void loadText() {
+    private String loadText(String name) {
+        String text;
         sPref = getSharedPreferences("Checking", MODE_PRIVATE);
-        checkOpen = sPref.getString(SAVED_TEXT, "");
+        text = sPref.getString(name, "");
+        return text;
     }
 }

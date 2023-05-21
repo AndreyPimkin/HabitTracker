@@ -214,7 +214,7 @@ public class SecondActivity extends AppCompatActivity {
             textViewHistory.setTextColor(Color.parseColor("#c8c8c8"));
             textViewPop.setTextColor(Color.parseColor("#ffffff"));
             textViewPerson.setTextColor(Color.parseColor("#ffffff"));
-            habitFragment = new HabitFragment();
+            historyFragment = new HistoryFragment();
             setNewFragment(historyFragment);
         } else {Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();}
     }
