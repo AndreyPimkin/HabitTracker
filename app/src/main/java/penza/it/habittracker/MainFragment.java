@@ -27,14 +27,11 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment{
     private ListView listView;
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     private Cursor cursor;

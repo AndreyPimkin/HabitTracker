@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class WebActivity extends AppCompatActivity {
-
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,6 @@ public class WebActivity extends AppCompatActivity {
         if (arguments != null) {
             browser.loadUrl(arguments.getString("link"));
         }
-
     }
 
 }

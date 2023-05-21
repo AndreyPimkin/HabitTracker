@@ -103,7 +103,6 @@ public class PopFragment extends Fragment {
         }
     }
 
-
     private void initList() {
         cursor = mDb.rawQuery("SELECT * FROM articles", null);
         if (cursor.moveToFirst()) {
