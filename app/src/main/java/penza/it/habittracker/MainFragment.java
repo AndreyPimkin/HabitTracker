@@ -200,10 +200,6 @@ public class MainFragment extends Fragment{
                     popupMenu.show();
                 }
             });
-
-
-
-
             return convertView;
         }
     }
@@ -227,7 +223,6 @@ public class MainFragment extends Fragment{
     }
 
     private void deleteText(String name) {
-
         sPref = this.getActivity().getSharedPreferences("Checking", Context.MODE_PRIVATE);
         sPref.edit().remove(name).apply();
     }

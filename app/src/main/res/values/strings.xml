@@ -9,7 +9,7 @@
     <string name="text_button_create_one"> <b> Неважно </b></string>
     <string name="text_button_create_two"> <b> Днем </b></string>
     <string name="text_button_create_three"> <b> Утром </b></string>
-    <string name="text_button_create_four"> <b> Вечером </b></string>
+    <string name="text_button_create_four"> <b> Вечером  </b></string>
     <string name="title_text_main">Добро пожаловать</string>
     <string name="second_text_main"> Вы уже использовали приложение? </string>
     <string name="image_one">Image one</string>

@@ -7,16 +7,17 @@
     tools:context=".PersonNoAuthoFragment">
 
     <TextView
+        android:id="@+id/textOAutho"
         android:layout_width="wrap_content"
-        android:textAlignment="center"
         android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="100dp"
-        android:layout_marginStart="78dp"
+        android:background="@drawable/ripple_text"
         android:fontFamily="@font/patua_one"
         android:text="@string/authorization_text_two"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="13sp"
-        />
+        android:textSize="13sp" />
 
 
     <TextView

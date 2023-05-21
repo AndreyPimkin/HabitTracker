@@ -2,6 +2,7 @@ package penza.it.habittracker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,6 +51,16 @@ public class PopFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listPop);
         articleAdapter = new ArticleAdapter(getActivity());
         listView.setAdapter(articleAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("link", linkList.get(position));
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -97,8 +109,8 @@ public class PopFragment extends Fragment {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 articleList.add(cursor.getString(1));
-                linkList.add(cursor.getString(3));
                 imageList.add(cursor.getString(2));
+                linkList.add(cursor.getString(3));
                 cursor.moveToNext();
             }
         }
