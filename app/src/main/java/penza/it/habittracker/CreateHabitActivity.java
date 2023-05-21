@@ -348,13 +348,11 @@ public class CreateHabitActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-
-
             }
-
 
             else {
                 if (countHabit <= 0) {
+
                     if (belonging.equals("new")) {
                         ++countHabit;
                         saveText(BELONGING, "new");
@@ -375,12 +373,14 @@ public class CreateHabitActivity extends AppCompatActivity {
                         saveText(INTERVAL, selectedPeriod);
                     }
                     saveText(COUNT, String.valueOf(countHabit));
+                    Intent intent = new Intent(CreateHabitActivity.this, SecondActivity.class);
+                    startActivity(intent);
+                    finish();
+
                 } else {
                     Snackbar.make(view, "Вы достигли лимита, пожалуйста, авторизуйтесь", Snackbar.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(CreateHabitActivity.this, SecondActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         }
     }

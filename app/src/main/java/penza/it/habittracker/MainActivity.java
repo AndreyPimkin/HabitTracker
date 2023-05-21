@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
             }
         });
+
         builder.setView(authorization_window);
         AlertDialog dialog = builder.create();
         dialog.show();

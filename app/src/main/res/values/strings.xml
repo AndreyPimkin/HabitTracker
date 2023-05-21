@@ -15,6 +15,8 @@
     <string name="image_one">Image one</string>
     <string name="email_field">Email</string>
     <string name="password_field">Password</string>
+    <string name="phone_field">Phone (89004553322)</string>
+    <string name="name_field">Name</string>
     <string name="authorization_text"> <u> Авторизация</u> </string>
     <string name="authorization_text_two"> <u> Уже использовали приложение? </u> </string>
     <string name="habit_text">ГЛАВНАЯ</string>
@@ -41,7 +43,7 @@
     <string name="clear_date">Сброс</string>
     <string name="registration">Регистрация</string>
     <string name="name_habit">Название привычки</string>
-    <string name="version">Version: 0.2.2</string>
+    <string name="version">Version: 0.3.5</string>
     <string name="exit">Выход</string>
     <string name="finish_habit">Завершить</string>
     <string name="delete_habit">Удалить</string>
