@@ -20,7 +20,7 @@
             android:maxWidth="200dp"
             android:textStyle="bold"
             android:text="Загаловок"
-            android:layout_marginTop="15dp"
+            android:layout_centerVertical="true"
             android:layout_marginStart="100dp"
             android:fontFamily="@font/patua_one"
             android:textColor="@color/white"

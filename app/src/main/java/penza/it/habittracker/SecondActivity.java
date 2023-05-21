@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class SecondActivity extends AppCompatActivity {
     HistoryFragment historyFragment;
     PopFragment popFragment;
     PersonFragment perFragment;
+    PersonNoAuthoFragment personNoAuthoFragment;
     MainFragment mainFragment;
     SharedPreferences sPref;
     final String SAVED_TEXT = "setting_user";
@@ -62,11 +64,11 @@ public class SecondActivity extends AppCompatActivity {
 
         mDBHelper = new DatabaseHelper(this);
 
-       /* try {
+        try {
             mDBHelper.updateDataBase();
         } catch (IOException mIOException) {
             throw new Error("UnableToUpdateDatabase");
-        }*/
+        }
 
         try {
             mDb = mDBHelper.getWritableDatabase();
@@ -83,12 +85,12 @@ public class SecondActivity extends AppCompatActivity {
         }
         if (checkAuthorization) {
             idUser = arguments.getInt("idUser");
-            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ? AND status = 'Создана'", new String[]{String.valueOf(idUser)});
             if(!cursor.isAfterLast()) {
                 cursor.moveToFirst();
                 checklist = true;
             }
-            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ? AND status = 'Создана'", new String[]{String.valueOf(idUser)});
 
             if (!cursor.isAfterLast()){
                 cursor.moveToFirst();
@@ -169,10 +171,10 @@ public class SecondActivity extends AppCompatActivity {
         textViewPerson.setTextColor(Color.parseColor("#ffffff"));
 
         if (checkAuthorization) {
-            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            cursor = mDb.rawQuery("SELECT * FROM list WHERE id_user = ? AND status = 'Создана'", new String[]{String.valueOf(idUser)});
             if(!cursor.isAfterLast()) checklist = true;
 
-            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ?", new String[]{String.valueOf(idUser)});
+            cursor = mDb.rawQuery("SELECT * FROM list_new WHERE id_user = ? AND status = 'Создана'", new String[]{String.valueOf(idUser)});
             if (!cursor.isAfterLast()) checkListTwo = true;
 
             if(checklist | checkListTwo){
@@ -238,8 +240,16 @@ public class SecondActivity extends AppCompatActivity {
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
         textViewPerson.setTextColor(Color.parseColor("#c8c8c8"));
-        perFragment = new PersonFragment();
-        setNewFragment(perFragment);
+        if (checkAuthorization){
+            Bundle bundle = new Bundle();
+            bundle.putInt("idUser", idUser);
+            perFragment = new PersonFragment();
+            perFragment.setArguments(bundle);
+            setNewFragment(perFragment);
+            return;
+        }
+        personNoAuthoFragment = new PersonNoAuthoFragment();
+        setNewFragment(personNoAuthoFragment);
     }
 
     public void openChoiceCategory(View view) {
