@@ -76,11 +76,8 @@ public class SecondActivity extends AppCompatActivity {
             throw mSQLException;
         }
 
-
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-          //  mailUser = arguments.getString("mail");
-          //  passwordUser = arguments.getString("password");
             checkAuthorization = arguments.getBoolean("checkAuthorization");
         }
         if (checkAuthorization) {
@@ -137,19 +134,6 @@ public class SecondActivity extends AppCompatActivity {
                 setNewFragment(habitFragment);
             }
         }
-
-    }
-
-    // метод прохождения обучения
-    private void training() {
-        saveText("already_used");
-    }
-
-    void saveText(String check) {
-        sPref = getSharedPreferences("Checking", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, check);
-        ed.apply();
     }
 
     private String loadText(String name) {
@@ -157,10 +141,6 @@ public class SecondActivity extends AppCompatActivity {
         sPref = getSharedPreferences("Checking", Context.MODE_PRIVATE);
         text = sPref.getString(name, "");
         return text;
-    }
-
-    public void output(View view) {
-        System.out.println(loadText("name_habit"));
     }
 
     public void openHabit(View v)
@@ -209,8 +189,7 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
-    public void openHistory(View v)
-    {
+    public void openHistory(View v) {
         if (checkAuthorization) {
             textViewHabit.setTextColor(Color.parseColor("#ffffff"));
             textViewHistory.setTextColor(Color.parseColor("#c8c8c8"));
@@ -221,8 +200,7 @@ public class SecondActivity extends AppCompatActivity {
         } else {Snackbar.make(root, "Эта функция доступна только авторизованным пользователям", Snackbar.LENGTH_SHORT).show();}
     }
 
-    public void openPop(View v)
-    {
+    public void openPop(View v) {
         if (checkAuthorization) {
             textViewHabit.setTextColor(Color.parseColor("#ffffff"));
             textViewHistory.setTextColor(Color.parseColor("#ffffff"));
@@ -234,8 +212,7 @@ public class SecondActivity extends AppCompatActivity {
 
     }
 
-    public void openPerson(View v)
-    {
+    public void openPerson(View v) {
         textViewHabit.setTextColor(Color.parseColor("#ffffff"));
         textViewHistory.setTextColor(Color.parseColor("#ffffff"));
         textViewPop.setTextColor(Color.parseColor("#ffffff"));
@@ -260,7 +237,6 @@ public class SecondActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
     @Override
     public void onBackPressed() {

@@ -25,5 +25,4 @@ public class WebActivity extends AppCompatActivity {
             browser.loadUrl(arguments.getString("link"));
         }
     }
-
 }

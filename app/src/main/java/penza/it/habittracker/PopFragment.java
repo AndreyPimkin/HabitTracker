@@ -40,7 +40,6 @@ public class PopFragment extends Fragment {
             throw mSQLException;
         }
         initList();
-
     }
 
     @Override
@@ -97,7 +96,6 @@ public class PopFragment extends Fragment {
 
             TextView signTextView = (TextView) convertView.findViewById(R.id.namePop);
             signTextView.setText(articleList.get(position));
-
 
             return convertView;
         }

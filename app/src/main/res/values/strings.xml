@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HabitTracker</string>
+    <string name="app_name">Трекер привычек</string>
     <string name="title_button_main">Продолжить</string>
     <string name="fg_text_one"> <b> Создать  </b> </string>
     <string name="fg_text_two"> <b> Создайте свою первую привычку  </b> </string>
