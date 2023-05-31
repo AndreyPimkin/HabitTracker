@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    int i = 0;
     // открывает дальнейшее окно без авторизации
     public void openNewWindow(View v) {
         Intent intent = new Intent(this, SecondActivity.class);

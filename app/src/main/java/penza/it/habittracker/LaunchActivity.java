@@ -18,6 +18,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     final String SAVED_TEXT = "setting_user";
     final String ID_TEXT = "id_user";
+    final String COUNT = "count";
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
@@ -42,6 +43,7 @@ public class LaunchActivity extends AppCompatActivity {
             createNotificationChannel();
             intent = new Intent(LaunchActivity.this, MainActivity.class);
             setAlarm();
+            saveText(COUNT, "0");
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -52,11 +54,18 @@ public class LaunchActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long time = System.currentTimeMillis();
         Intent intent = new Intent(LaunchActivity.this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(LaunchActivity.this, 0, intent, 0);
+        pendingIntent = PendingIntent.getBroadcast(LaunchActivity.this, 0, intent, PendingIntent.FLAG_MUTABLE);
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
                 AlarmManager.INTERVAL_DAY, pendingIntent);
 
+    }
+
+    void saveText(String saved, String check) {
+        sPref = getSharedPreferences("Checking", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(saved, check);
+        ed.apply();
     }
 
 

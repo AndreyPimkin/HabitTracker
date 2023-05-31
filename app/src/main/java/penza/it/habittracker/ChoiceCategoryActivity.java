@@ -41,11 +41,6 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
 
         mDBHelper = new DatabaseHelper(this);
 
-     /*   try {
-            mDBHelper.updateDataBase();
-        } catch (IOException mIOException) {
-            throw new Error("UnableToUpdateDatabase");
-        }*/
 
         try {
             mDb = mDBHelper.getWritableDatabase();
@@ -94,7 +89,6 @@ public class ChoiceCategoryActivity extends AppCompatActivity {
 
     }
 
-    // Пишем свой класс-адаптер
     private class CategoryAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
 

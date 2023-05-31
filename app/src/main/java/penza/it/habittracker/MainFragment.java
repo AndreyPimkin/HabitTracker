@@ -279,10 +279,12 @@ public class MainFragment extends Fragment{
     private void completeHabit(String nameHabit, int position){
         cursor = mDb.rawQuery("SELECT * FROM habits WHERE name = ?", new String[]{nameHabit});
         if(cursor.isAfterLast()){
-            mDb.execSQL("UPDATE list_new SET status = 'Завершена' WHERE name_habit = ?", new String[]{nameHabit});
+            mDb.execSQL("UPDATE list_new SET status = 'Завершена' " +
+                    "WHERE name_habit = ?", new String[]{nameHabit});
         }
         else{
-            mDb.execSQL("UPDATE list SET status = 'Завершена' WHERE id_habit = (SELECT id_habit FROM habits WHERE name = ?)", new String[]{nameHabit});
+            mDb.execSQL("UPDATE list SET status = 'Завершена' " +
+                    "WHERE id_habit = (SELECT id_habit FROM habits WHERE name = ?)", new String[]{nameHabit});
         }
         cursor.close();
         nameList.remove(position);
